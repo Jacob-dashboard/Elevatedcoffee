@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elevated Coffee — Elevate Your Mind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo"><img src="logo_cream.png" alt="ELEVATED" class="nav__logo-img" /></a>
+      <ul class="nav__links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#ingredients">Ingredients</a></li>
+        <li><a href="#contact" class="nav__cta">Shop Now</a></li>
+      </ul>
+      <div class="nav__right">
+        <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+        </button>
+        <button class="nav__hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-drawer__header">
+      <h2>Your Cart</h2>
+      <button class="cart-drawer__close" id="cartClose" aria-label="Close cart">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cart-drawer__items" id="cartItems">
+      <p class="cart-empty">Your cart is empty.</p>
+    </div>
+    <div class="cart-drawer__footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="btn btn--dark cart-checkout">Checkout</button>
+      <p class="cart-note">Shipping calculated at checkout</p>
+    </div>
+  </aside>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg-watermark" aria-hidden="true">
+      <img src="logo_cream.png" alt="" />
+      <img src="logo_cream.png" alt="" />
+      <img src="logo_cream.png" alt="" />
+      <img src="logo_cream.png" alt="" />
+    </div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Ready to Drink Coffee</p>
+      <h1 class="hero__title">
+        <img src="logo_cream.png" alt="ELEVATED" class="hero__logo" />
+      </h1>
+      <p class="hero__tagline">Enjoy the brew, elevate your mind.</p>
+      <p class="hero__sub">Made with L-Theanine, Ashwagandha, and Lion's Mane.</p>
+      <div class="hero__actions">
+        <a href="#products" class="btn btn--light">Explore Flavors</a>
+        <a href="#ingredients" class="btn btn--outline">Our Ingredients</a>
+      </div>
+    </div>
+    <div class="hero__scroll" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__text">
+          <span class="label">Our Story</span>
+          <h2 class="section-title">Coffee that works as hard as you do.</h2>
+          <p>Elevated isn't just another canned coffee. We blended premium cold brew with functional adaptogens to give you clean, sustained energy — without the crash.</p>
+          <p>Every can is crafted to fuel your focus, calm your mind, and keep you moving through whatever the day brings.</p>
+          <a href="#products" class="btn btn--dark">See Our Drinks</a>
+        </div>
+        <div class="about__stats">
+          <div class="stat">
+            <span class="stat__num">150<span>mg</span></span>
+            <span class="stat__label">Caffeine</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">12<span>fl oz</span></span>
+            <span class="stat__label">Per Can</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">3</span>
+            <span class="stat__label">Adaptogens</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">0<span>g</span></span>
+            <span class="stat__label">Artificial Junk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <div class="container">
+      <span class="label label--light">The Lineup</span>
+      <h2 class="section-title section-title--light">Three flavors.<br>One elevation.</h2>
+      <div class="products__grid">
+
+        <!-- Black Coffee -->
+        <div class="product-card product-card--dark">
+          <div class="product-card__can-wrap">
+            <img src="can_black_coffee.png" alt="Elevated Black Coffee Can" class="product-card__can-img" />
+          </div>
+          <div class="product-card__details">
+            <h3>Black Coffee</h3>
+            <p>Bold, clean, and unapologetic. Pure cold brew with adaptogens — nothing to hide.</p>
+            <div class="product-card__tags">
+              <span>Bold</span><span>Clean</span><span>Unsweetened</span>
+            </div>
+            <div class="product-card__buy">
+              <button class="btn btn--add-cart btn--pack" data-name="Black Coffee (4-Pack)" data-price="17.99" data-img="can_black_coffee.png">$17.99 / 4-Pack</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Oat Vanilla Latte -->
+        <div class="product-card product-card--blue">
+          <div class="product-card__can-wrap">
+            <img src="can_oat_vanilla_latte.png" alt="Elevated Oat Vanilla Latte Can" class="product-card__can-img" />
+          </div>
+          <div class="product-card__details">
+            <h3>Oat Vanilla Latte</h3>
+            <p>Smooth oat milk, real vanilla, and cold brew. Creamy elevated bliss.</p>
+            <div class="product-card__tags">
+              <span>Smooth</span><span>Dairy-Free</span><span>Sweet</span>
+            </div>
+            <div class="product-card__buy">
+              <button class="btn btn--add-cart btn--pack" data-name="Oat Vanilla Latte (4-Pack)" data-price="17.99" data-img="can_oat_vanilla_latte.png">$17.99 / 4-Pack</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Caramel Latte -->
+        <div class="product-card product-card--caramel">
+          <div class="product-card__can-wrap">
+            <img src="can_caramel_latte.png" alt="Elevated Caramel Latte Can" class="product-card__can-img" />
+          </div>
+          <div class="product-card__details">
+            <h3>Caramel Latte</h3>
+            <p>Rich caramel meets cold brew. Indulgent, but still doing something for you.</p>
+            <div class="product-card__tags">
+              <span>Rich</span><span>Indulgent</span><span>Balanced</span>
+            </div>
+            <div class="product-card__buy">
+              <button class="btn btn--add-cart btn--pack" data-name="Caramel Latte (4-Pack)" data-price="17.99" data-img="can_caramel_latte.png">$17.99 / 4-Pack</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INGREDIENTS -->
+  <section class="ingredients" id="ingredients">
+    <div class="container">
+      <span class="label">What's Inside</span>
+      <h2 class="section-title">Function meets flavor.</h2>
+      <p class="section-intro">Every can is powered by three adaptogens chosen to help your mind and body perform at their best.</p>
+      <div class="ingredients__grid">
+        <div class="ingredient">
+          <h3>L-Theanine</h3>
+          <p>An amino acid found in tea that promotes calm focus and smooths out caffeine's edges — so you stay sharp without the jitters.</p>
+        </div>
+        <div class="ingredient">
+          <h3>Ashwagandha</h3>
+          <p>A powerful adaptogen used for centuries to reduce stress, balance cortisol, and support sustained energy throughout the day.</p>
+        </div>
+        <div class="ingredient">
+          <h3>Lion's Mane</h3>
+          <p>A functional mushroom renowned for its nootropic properties — supports memory, mental clarity, and neurological health.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE STRIP -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>ELEVATED · ENJOY THE BREW · ELEVATE YOUR MIND · L-THEANINE · ASHWAGANDHA · LION'S MANE · 150MG CAFFEINE · </span>
+      <span>ELEVATED · ENJOY THE BREW · ELEVATE YOUR MIND · L-THEANINE · ASHWAGANDHA · LION'S MANE · 150MG CAFFEINE · </span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="container">
+      <div class="cta__inner">
+        <h2 class="cta__title">Ready to elevate?</h2>
+        <p class="cta__sub">Join thousands who've made the switch to smarter coffee.</p>
+        <form class="cta__form">
+          <input type="email" placeholder="Your email address" required />
+          <button type="submit" class="btn btn--cream">Get Early Access</button>
+        </form>
+        <p class="cta__fine">No spam. Just drops, news, and the occasional good idea.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <img src="logo_cream.png" alt="ELEVATED" class="footer__logo-img" />
+        <nav class="footer__nav">
+          <a href="#about">About</a>
+          <a href="#products">Products</a>
+          <a href="#ingredients">Ingredients</a>
+          <a href="https://instagram.com/elevated.coffee.co" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://tiktok.com/@elevatedcoffee" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://x.com/elevatedcoffee" target="_blank" rel="noopener">X</a>
+        </nav>
+      </div>
+      <div class="footer__social">
+        <!-- Instagram -->
+        <a href="https://instagram.com/elevated.coffee.co" class="footer__social-link" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>@elevated.coffee.co</span>
+        </a>
+        <!-- TikTok -->
+        <a href="https://tiktok.com/@elevatedcoffee" class="footer__social-link" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-4.76-4.76V1h-3.06v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V8.35a6.02 6.02 0 0 0-.79-.05 5.95 5.95 0 0 0-5.95 5.95 5.95 5.95 0 0 0 5.95 5.95 5.95 5.95 0 0 0 5.95-5.95V8.89a7.88 7.88 0 0 0 4.76 1.58V7.41a4.84 4.84 0 0 1-1-.72z"/>
+          </svg>
+          <span>@elevatedcoffee</span>
+        </a>
+        <!-- X / Twitter -->
+        <a href="https://x.com/elevatedcoffee" class="footer__social-link" target="_blank" rel="noopener" aria-label="X">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.733-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          <span>@elevatedcoffee</span>
+        </a>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Elevated Coffee. All rights reserved.</p>
+        <p>12 fl oz (355ml) · 150mg Caffeine per can</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
