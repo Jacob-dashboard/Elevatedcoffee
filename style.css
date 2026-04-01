@@ -617,7 +617,7 @@ body {
 .marquee__track {
   display: inline-flex;
   will-change: transform;
-  animation: marquee-scroll 30s linear infinite;
+  animation: marquee-scroll 50s linear infinite;
 }
 
 .marquee__track span {
