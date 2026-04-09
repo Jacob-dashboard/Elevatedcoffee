@@ -422,7 +422,7 @@ body {
   height: auto;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.4));
+  filter: none;
   transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .product-card:hover .product-card__can-img {
@@ -1125,7 +1125,7 @@ body {
   color: var(--cream);
 }
 
-/* ─── CARAMEL CAN: stronger shadow to pop on brown bg ─── */
+/* ─── CARAMEL CAN: no shadow ─── */
 .product-card--caramel .product-card__can-img {
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6)) drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  filter: none;
 }
