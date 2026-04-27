@@ -461,7 +461,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 <script>
 // ─── CONFIG ───
 // Replace this URL with your deployed Google Apps Script web app URL
-const GOOGLE_SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUS9Ig_m2ebRu85TROZ7KpjJdB5qioUntES75R2gn3EigzmvH6vpG9o2P4BemPzXu7Qg/exec';
 // Replace with your Netlify function URL (auto-detected if on Netlify)
 const NETLIFY_FN_URL = '/.netlify/functions/submit-review';
 
@@ -625,7 +625,7 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   localStorage.setItem('elevatedReviews', JSON.stringify(stored));
 
   // Try Google Apps Script
-  if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+  if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbwUS9Ig_m2ebRu85TROZ7KpjJdB5qioUntES75R2gn3EigzmvH6vpG9o2P4BemPzXu7Qg/exec') {
     try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch(err) { console.log('Google Script error:', err); }
   }
 
