@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elevated Coffee — Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --espresso:#2C1810;--espresso-light:#3D2517;--espresso-mid:#4A2E1C;
+  --cream:#F5E6D3;--cream-light:#FFF8F0;--gold:#C8A96E;--gold-light:#D4BA85;
+  --caramel:#A0714F;--caramel-light:#B8896A;
+  --text-primary:#F5E6D3;--text-secondary:#C8A96E;--text-muted:#9A8574;
+  --success:#6DBF73;--error:#E07A5F;
+  --radius:12px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;background:var(--espresso);color:var(--text-primary);
+  min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+/* Progress Bar */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--caramel-light));z-index:1000;transition:width .4s ease;width:0}
+/* Container */
+.container{max-width:540px;margin:0 auto;padding:24px 20px 60px}
+/* Header */
+.header{text-align:center;padding:32px 0 24px;animation:fadeDown .6s ease}
+.logo-text{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--cream);letter-spacing:1px}
+.logo-sub{font-family:'Inter',sans-serif;font-size:.75rem;font-weight:400;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-top:4px}
+.tagline{font-size:.85rem;color:var(--text-muted);margin-top:16px;font-weight:300}
+/* Sections */
+.form-section{
+  background:var(--espresso-light);border:1px solid rgba(200,169,110,.12);
+  border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;
+  opacity:0;transform:translateY(20px);transition:all .5s ease;
+}
+.form-section.visible{opacity:1;transform:translateY(0)}
+.section-number{font-size:.65rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.section-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:600;color:var(--cream);margin-bottom:16px}
+.section-desc{font-size:.8rem;color:var(--text-muted);margin-bottom:20px;line-height:1.5}
+/* Form Elements */
+label.field-label{display:block;font-size:.8rem;font-weight:500;color:var(--cream);margin-bottom:8px}
+select,textarea{
+  width:100%;background:var(--espresso);border:1px solid rgba(200,169,110,.2);
+  border-radius:var(--radius-sm);color:var(--cream);font-family:'Inter',sans-serif;
+  font-size:.9rem;padding:12px 16px;outline:none;transition:border-color .3s;
+  -webkit-appearance:none;appearance:none;
+}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C8A96E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:100px}
+textarea::placeholder{color:var(--text-muted);font-style:italic}
+/* Radio Group */
+.radio-group{display:flex;flex-direction:column;gap:10px}
+.radio-option{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:var(--espresso);border:1px solid rgba(200,169,110,.15);
+  border-radius:var(--radius-sm);cursor:pointer;transition:all .25s ease;
+}
+.radio-option:hover{border-color:var(--gold);background:var(--espresso-mid)}
+.radio-option.selected{border-color:var(--gold);background:rgba(200,169,110,.08)}
+.radio-option input{display:none}
+.radio-dot{
+  width:20px;height:20px;border-radius:50%;border:2px solid var(--text-muted);
+  position:relative;flex-shrink:0;transition:all .25s ease;
+}
+.radio-option.selected .radio-dot{border-color:var(--gold)}
+.radio-option.selected .radio-dot::after{
+  content:'';position:absolute;inset:3px;border-radius:50%;background:var(--gold);
+  animation:popIn .25s ease;
+}
+.radio-label{font-size:.85rem;color:var(--cream);font-weight:400}
+/* Star Ratings */
+.flavor-card{
+  background:var(--espresso);border:1px solid rgba(200,169,110,.12);
+  border-radius:var(--radius-sm);padding:20px;margin-bottom:14px;
+}
+.flavor-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-bottom:4px}
+.flavor-hint{font-size:.7rem;color:var(--text-muted);margin-bottom:12px}
+.stars{display:flex;gap:6px;margin-bottom:8px}
+.star{
+  width:36px;height:36px;cursor:pointer;transition:transform .15s ease;
+  fill:rgba(200,169,110,.2);stroke:var(--gold);stroke-width:1;
+}
+.star:hover{transform:scale(1.15)}
+.star.active{fill:var(--gold);stroke:var(--gold)}
+.star.hover-preview{fill:rgba(200,169,110,.5)}
+.havent-tried{
+  display:inline-flex;align-items:center;gap:6px;font-size:.75rem;
+  color:var(--text-muted);cursor:pointer;padding:4px 0;
+}
+.havent-tried input{accent-color:var(--gold);width:14px;height:14px}
+.havent-tried.checked{color:var(--gold)}
+/* Toggle */
+.adaptogen-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px;background:var(--espresso);border:1px solid rgba(200,169,110,.12);
+  border-radius:var(--radius-sm);margin-bottom:12px;flex-wrap:wrap;gap:8px;
+}
+.adaptogen-info{flex:1;min-width:160px}
+.adaptogen-name{font-weight:600;font-size:.9rem;color:var(--cream)}
+.adaptogen-desc{font-size:.7rem;color:var(--text-muted);margin-top:2px;font-style:italic}
+.toggle-group{display:flex;gap:0;border-radius:20px;overflow:hidden;border:1px solid rgba(200,169,110,.2);flex-shrink:0}
+.toggle-btn{
+  padding:6px 16px;font-size:.75rem;font-family:'Inter',sans-serif;font-weight:500;
+  border:none;cursor:pointer;transition:all .25s ease;
+  background:transparent;color:var(--text-muted);
+}
+.toggle-btn.active-yes{background:var(--gold);color:var(--espresso)}
+.toggle-btn.active-no{background:rgba(200,169,110,.15);color:var(--cream)}
+/* Submit */
+.submit-btn{
+  display:block;width:100%;padding:16px;border:none;border-radius:var(--radius);
+  background:linear-gradient(135deg,var(--gold),var(--caramel));
+  color:var(--espresso);font-family:'Playfair Display',serif;font-size:1.1rem;
+  font-weight:600;cursor:pointer;transition:all .3s ease;letter-spacing:.5px;
+  position:relative;overflow:hidden;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,169,110,.3)}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-btn .spinner{display:none;width:20px;height:20px;border:2px solid var(--espresso);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto}
+.submit-btn.loading .btn-text{display:none}
+.submit-btn.loading .spinner{display:block}
+.validation-msg{font-size:.75rem;color:var(--error);text-align:center;margin-bottom:12px;display:none}
+.validation-msg.show{display:block;animation:shake .4s ease}
+/* Thank You */
+.thank-you{
+  display:none;text-align:center;padding:60px 24px;
+  animation:fadeUp .6s ease;
+}
+.thank-you.show{display:block}
+.thank-you .check{font-size:3rem;margin-bottom:16px}
+.thank-you h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--cream);margin-bottom:12px}
+.thank-you p{font-size:.9rem;color:var(--text-muted);line-height:1.6}
+/* Admin Export (hidden) */
+.admin-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--espresso-light);border-top:1px solid var(--gold);padding:12px;text-align:center;z-index:999}
+.admin-bar.show{display:block}
+.admin-bar button{
+  padding:8px 20px;background:var(--gold);color:var(--espresso);border:none;
+  border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+/* Animations */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Responsive */
+@media(max-width:380px){
+  .container{padding:16px 14px 60px}
+  .form-section{padding:20px 16px}
+  .logo-text{font-size:1.6rem}
+  .star{width:32px;height:32px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-text">ELEVATED COFFEE</div>
+    <div class="logo-sub">Adaptogens + Coffee</div>
+    <p class="tagline">We'd love your honest feedback — it takes about 2 minutes.</p>
+  </div>
+
+  <form id="reviewForm" novalidate>
+
+    <!-- Section 1: About You -->
+    <div class="form-section" data-section="1">
+      <div class="section-number">Step 1 of 9</div>
+      <div class="section-title">About You</div>
+      <label class="field-label">Age Range <span style="color:var(--text-muted);font-weight:300">(optional)</span></label>
+      <select id="ageRange" name="ageRange">
+        <option value="">Prefer not to say</option>
+        <option value="Under 21">Under 21</option>
+        <option value="21-25">21–25</option>
+        <option value="26-30">26–30</option>
+        <option value="31-35">31–35</option>
+        <option value="36-40">36–40</option>
+        <option value="41-50">41–50</option>
+        <option value="51+">51+</option>
+      </select>
+    </div>
+
+    <!-- Section 2: Price Sensitivity -->
+    <div class="form-section" data-section="2">
+      <div class="section-number">Step 2 of 9</div>
+      <div class="section-title">Price Sensitivity</div>
+      <p class="section-desc">What would you be willing to pay for a single can of Elevated Coffee?</p>
+      <div class="radio-group" id="priceGroup">
+        <label class="radio-option" data-value="$3.75-$4.00">
+          <input type="radio" name="price" value="$3.75-$4.00">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$3.75 – $4.00</span>
+        </label>
+        <label class="radio-option" data-value="$4.01-$4.25">
+          <input type="radio" name="price" value="$4.01-$4.25">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.01 – $4.25</span>
+        </label>
+        <label class="radio-option" data-value="$4.26-$4.50">
+          <input type="radio" name="price" value="$4.26-$4.50">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.26 – $4.50</span>
+        </label>
+        <label class="radio-option" data-value="$4.51-$4.75">
+          <input type="radio" name="price" value="$4.51-$4.75">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.51 – $4.75</span>
+        </label>
+        <label class="radio-option" data-value="$4.76-$5.00">
+          <input type="radio" name="price" value="$4.76-$5.00">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.76 – $5.00</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 3: Can Size Preference -->
+    <div class="form-section" data-section="3">
+      <div class="section-number">Step 3 of 9</div>
+      <div class="section-title">Can Size Preference</div>
+      <p class="section-desc">Which can size would you gravitate towards?</p>
+      <!-- Size comparison graphic -->
+      <div style="display:flex;justify-content:center;gap:32px;margin-bottom:20px">
+        <div style="text-align:center">
+          <div style="width:36px;height:90px;background:linear-gradient(180deg,var(--gold),var(--caramel));border-radius:4px 4px 2px 2px;margin:0 auto 8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)">
+            <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:.35rem;color:var(--espresso);font-weight:700;letter-spacing:.5px;white-space:nowrap">EC</div>
+          </div>
+          <div style="font-size:.65rem;color:var(--text-muted)">8.4 oz</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:44px;height:110px;background:linear-gradient(180deg,var(--gold),var(--caramel));border-radius:4px 4px 2px 2px;margin:0 auto 8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)">
+            <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:.4rem;color:var(--espresso);font-weight:700;letter-spacing:.5px;white-space:nowrap">EC</div>
+          </div>
+          <div style="font-size:.65rem;color:var(--text-muted)">12 oz</div>
+        </div>
+      </div>
+      <div class="radio-group" id="canSizeGroup">
+        <label class="radio-option" data-value="8.4 oz (slim can)">
+          <input type="radio" name="canSize" value="8.4 oz (slim can)">
+          <span class="radio-dot"></span>
+          <span class="radio-label">8.4 oz (slim can)</span>
+        </label>
+        <label class="radio-option" data-value="12 oz (standard can)">
+          <input type="radio" name="canSize" value="12 oz (standard can)">
+          <span class="radio-dot"></span>
+          <span class="radio-label">12 oz (standard can)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 4: Calorie Preference -->
+    <div class="form-section" data-section="4">
+      <div class="section-number">Step 4 of 9</div>
+      <div class="section-title">Calorie Preference</div>
+      <p class="section-desc">How important are calories when choosing a ready-to-drink coffee?</p>
+      <div class="radio-group" id="calorieGroup">
+        <label class="radio-option" data-value="Very important">
+          <input type="radio" name="calorieImportance" value="Very important">
+          <span class="radio-dot"></span>
+          <span class="radio-label">Very important</span>
+        </label>
+        <label class="radio-option" data-value="Somewhat important">
+          <input type="radio" name="calorieImportance" value="Somewhat important">
+          <span class="radio-dot"></span>
+          <span class="radio-label">Somewhat important</span>
+        </label>
+        <label class="radio-option" data-value="Not important">
+          <input type="radio" name="calorieImportance" value="Not important">
+          <span class="radio-dot"></span>
+          <span class="radio-label">Not important</span>
+        </label>
+      </div>
+      <div style="margin-top:16px;padding:14px 16px;background:var(--espresso);border:1px dashed rgba(200,169,110,.2);border-radius:var(--radius-sm)">
+        <div style="font-size:.7rem;color:var(--gold);font-weight:500;margin-bottom:4px">Coming Soon</div>
+        <div style="font-size:.75rem;color:var(--text-muted);line-height:1.5">Calorie counts per SKU coming soon — we'll update this section with exact numbers and a preference question.</div>
+        <!-- PLACEHOLDER: Jacob — replace this block with actual calorie data per SKU
+             Suggested format:
+             - Black Coffee: XX cal
+             - Vanilla Oat: XX cal
+             - Caramel Latte: XX cal
+             Then add: "Knowing the calorie count, which SKU appeals most?" with radio buttons for each flavor -->
+      </div>
+    </div>
+
+    <!-- Section 5: Flavor Ratings -->
+    <div class="form-section" data-section="5">
+      <div class="section-number">Step 5 of 9</div>
+      <div class="section-title">Rate Our Flavors</div>
+
+      <div class="flavor-card" data-flavor="blackCoffee">
+        <div class="flavor-name">Black Coffee</div>
+        <div class="flavor-hint">1 = Not for me &nbsp;·&nbsp; 5 = I need this in my life</div>
+        <div class="stars" data-rating="0">
+          <svg class="star" data-star="1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <label class="havent-tried"><input type="checkbox" data-skip="blackCoffee"> Haven't tried this one</label>
+      </div>
+
+      <div class="flavor-card" data-flavor="vanillaOat">
+        <div class="flavor-name">Vanilla Oat</div>
+        <div class="flavor-hint">1 = Not for me &nbsp;·&nbsp; 5 = I need this in my life</div>
+        <div class="stars" data-rating="0">
+          <svg class="star" data-star="1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <label class="havent-tried"><input type="checkbox" data-skip="vanillaOat"> Haven't tried this one</label>
+      </div>
+
+      <div class="flavor-card" data-flavor="caramelLatte">
+        <div class="flavor-name">Caramel Latte</div>
+        <div class="flavor-hint">1 = Not for me &nbsp;·&nbsp; 5 = I need this in my life</div>
+        <div class="stars" data-rating="0">
+          <svg class="star" data-star="1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <label class="havent-tried"><input type="checkbox" data-skip="caramelLatte"> Haven't tried this one</label>
+      </div>
+    </div>
+
+    <!-- Section 6: Website Rating -->
+    <div class="form-section" data-section="7">
+      <div class="section-number">Step 7 of 9</div>
+      <div class="section-title">Our Website</div>
+      <p class="section-desc">How would you rate our website?</p>
+
+      <div class="flavor-card" data-flavor="websiteAesthetics">
+        <div class="flavor-name">Aesthetics</div>
+        <div class="flavor-hint">How does it look and feel?</div>
+        <div class="stars" data-rating="0">
+          <svg class="star" data-star="1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+      </div>
+
+      <div class="flavor-card" data-flavor="websiteFunctionality">
+        <div class="flavor-name">Functionality</div>
+        <div class="flavor-hint">How well does it work?</div>
+        <div class="stars" data-rating="0">
+          <svg class="star" data-star="1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 8: Adaptogens -->
+    <div class="form-section" data-section="8">
+      <div class="section-number">Step 8 of 9</div>
+      <div class="section-title">Know Your Adaptogens</div>
+      <p class="section-desc">Did you know Elevated Coffee contains these 3 adaptogens?</p>
+
+      <div class="adaptogen-row">
+        <div class="adaptogen-info">
+          <div class="adaptogen-name">Ashwagandha</div>
+          <div class="adaptogen-desc">Reduces stress &amp; supports focus</div>
+        </div>
+        <div class="toggle-group" data-adaptogen="ashwagandha">
+          <button type="button" class="toggle-btn" data-val="yes">Yes</button>
+          <button type="button" class="toggle-btn" data-val="no">No</button>
+        </div>
+      </div>
+
+      <div class="adaptogen-row">
+        <div class="adaptogen-info">
+          <div class="adaptogen-name">Lion's Mane</div>
+          <div class="adaptogen-desc">Supports brain health &amp; mental clarity</div>
+        </div>
+        <div class="toggle-group" data-adaptogen="lionsMane">
+          <button type="button" class="toggle-btn" data-val="yes">Yes</button>
+          <button type="button" class="toggle-btn" data-val="no">No</button>
+        </div>
+      </div>
+
+      <div class="adaptogen-row">
+        <div class="adaptogen-info">
+          <div class="adaptogen-name">L-Theanine</div>
+          <div class="adaptogen-desc">Smooth, calm energy without the jitters</div>
+        </div>
+        <div class="toggle-group" data-adaptogen="lTheanine">
+          <button type="button" class="toggle-btn" data-val="yes">Yes</button>
+          <button type="button" class="toggle-btn" data-val="no">No</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="validation-msg" id="validationMsg">Please select a price range and rate at least one flavor (or mark it as "Haven't tried").</div>
+    <button type="submit" class="submit-btn" id="submitBtn">
+      <span class="btn-text">Submit Review ☕</span>
+      <div class="spinner"></div>
+    </button>
+  </form>
+
+  <!-- Thank You Screen -->
+  <div class="thank-you" id="thankYou">
+    <div class="check">☕</div>
+    <h2>Thanks for elevating with us!</h2>
+    <p>Your feedback helps us brew something better.<br>Stay caffeinated.</p>
+  </div>
+</div>
+
+<!-- Admin Export Bar (visible with ?admin=true) -->
+<div class="admin-bar" id="adminBar">
+  <button onclick="exportCSV()">Export All Responses as CSV</button>
+  <span style="margin-left:12px;font-size:.75rem;color:var(--text-muted)" id="responseCount"></span>
+</div>
+
+<script>
+// ─── CONFIG ───
+// Replace this URL with your deployed Google Apps Script web app URL
+const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+// Replace with your Netlify function URL (auto-detected if on Netlify)
+const NETLIFY_FN_URL = '/.netlify/functions/submit-review';
+
+// ─── Progress Bar ───
+const sections = document.querySelectorAll('.form-section');
+const progressBar = document.getElementById('progressBar');
+
+function updateProgress() {
+  let filled = 0;
+  const total = 9;
+  // Check each section for input
+  if (document.getElementById('ageRange').value) filled += 1;
+  if (document.querySelector('input[name="price"]:checked')) filled += 1;
+  if (document.querySelector('input[name="canSize"]:checked')) filled += 1;
+  if (document.querySelector('input[name="calorieImportance"]:checked')) filled += 1;
+  const flavors = ['blackCoffee','vanillaOat','caramelLatte'];
+  let flavorFilled = false;
+  flavors.forEach(f => {
+    const card = document.querySelector(`[data-flavor="${f}"]`);
+    const stars = card.querySelector('.stars');
+    const skip = card.querySelector(`[data-skip="${f}"]`);
+    if (parseInt(stars.dataset.rating) > 0 || (skip && skip.checked)) flavorFilled = true;
+  });
+  if (flavorFilled) filled += 1;
+  const webA = document.querySelector('[data-flavor="websiteAesthetics"] .stars');
+  const webF = document.querySelector('[data-flavor="websiteFunctionality"] .stars');
+  if (parseInt(webA.dataset.rating) > 0 || parseInt(webF.dataset.rating) > 0) filled += 1;
+  const toggles = document.querySelectorAll('.toggle-group');
+  let anyToggle = false;
+  toggles.forEach(t => { if (t.dataset.value) anyToggle = true; });
+  if (anyToggle) filled += 1;
+  progressBar.style.width = Math.round((filled / total) * 100) + '%';
+}
+
+// ─── Intersection Observer for fade-in ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+sections.forEach(s => observer.observe(s));
+
+// ─── Radio Buttons ───
+document.querySelectorAll('.radio-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    opt.closest('.radio-group').querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    opt.querySelector('input').checked = true;
+    updateProgress();
+  });
+});
+
+// ─── Star Ratings ───
+document.querySelectorAll('.stars').forEach(starsContainer => {
+  const stars = starsContainer.querySelectorAll('.star');
+  stars.forEach(star => {
+    star.addEventListener('mouseenter', () => {
+      const val = parseInt(star.dataset.star);
+      stars.forEach(s => {
+        s.classList.toggle('hover-preview', parseInt(s.dataset.star) <= val && !s.classList.contains('active'));
+      });
+    });
+    star.addEventListener('mouseleave', () => {
+      stars.forEach(s => s.classList.remove('hover-preview'));
+    });
+    star.addEventListener('click', () => {
+      const val = parseInt(star.dataset.star);
+      starsContainer.dataset.rating = val;
+      stars.forEach(s => {
+        s.classList.toggle('active', parseInt(s.dataset.star) <= val);
+        s.classList.remove('hover-preview');
+      });
+      // Uncheck "haven't tried" if rating selected
+      const card = starsContainer.closest('.flavor-card');
+      const skip = card.querySelector('[data-skip]');
+      if (skip) { skip.checked = false; skip.closest('.havent-tried').classList.remove('checked'); }
+      updateProgress();
+    });
+  });
+});
+
+// ─── Haven't Tried Checkboxes ───
+document.querySelectorAll('.havent-tried input').forEach(cb => {
+  cb.addEventListener('change', () => {
+    cb.closest('.havent-tried').classList.toggle('checked', cb.checked);
+    if (cb.checked) {
+      const card = cb.closest('.flavor-card');
+      const starsEl = card.querySelector('.stars');
+      starsEl.dataset.rating = '0';
+      starsEl.querySelectorAll('.star').forEach(s => s.classList.remove('active','hover-preview'));
+    }
+    updateProgress();
+  });
+});
+
+// ─── Adaptogen Toggles ───
+document.querySelectorAll('.toggle-group').forEach(group => {
+  group.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active-yes','active-no'));
+      const val = btn.dataset.val;
+      btn.classList.add(val === 'yes' ? 'active-yes' : 'active-no');
+      group.dataset.value = val;
+      updateProgress();
+    });
+  });
+});
+
+// ─── Listen for changes ───
+document.getElementById('ageRange').addEventListener('change', updateProgress);
+
+// ─── Collect Data ───
+function collectData() {
+  const data = { timestamp: new Date().toISOString() };
+  data.ageRange = document.getElementById('ageRange').value || '';
+  const priceEl = document.querySelector('input[name="price"]:checked');
+  data.price = priceEl ? priceEl.value : '';
+  const canSizeEl = document.querySelector('input[name="canSize"]:checked');
+  data.canSize = canSizeEl ? canSizeEl.value : '';
+  const calEl = document.querySelector('input[name="calorieImportance"]:checked');
+  data.calorieImportance = calEl ? calEl.value : '';
+  ['blackCoffee','vanillaOat','caramelLatte'].forEach(f => {
+    const card = document.querySelector(`[data-flavor="${f}"]`);
+    const skip = card.querySelector(`[data-skip="${f}"]`);
+    if (skip && skip.checked) { data[f] = 'Haven\'t tried'; }
+    else { data[f] = parseInt(card.querySelector('.stars').dataset.rating) || 0; }
+  });
+  data.websiteAesthetics = parseInt(document.querySelector('[data-flavor="websiteAesthetics"] .stars').dataset.rating) || 0;
+  data.websiteFunctionality = parseInt(document.querySelector('[data-flavor="websiteFunctionality"] .stars').dataset.rating) || 0;
+  document.querySelectorAll('.toggle-group').forEach(g => {
+    data['adaptogen_' + g.dataset.adaptogen] = g.dataset.value || '';
+  });
+  return data;
+}
+
+// ─── Validate ───
+function validate() {
+  const price = document.querySelector('input[name="price"]:checked');
+  if (!price) return false;
+  const flavors = ['blackCoffee','vanillaOat','caramelLatte'];
+  let atLeastOne = false;
+  flavors.forEach(f => {
+    const card = document.querySelector(`[data-flavor="${f}"]`);
+    const rating = parseInt(card.querySelector('.stars').dataset.rating);
+    const skip = card.querySelector(`[data-skip="${f}"]`);
+    if (rating > 0 || (skip && skip.checked)) atLeastOne = true;
+  });
+  return atLeastOne;
+}
+
+// ─── Submit ───
+document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('validationMsg');
+  if (!validate()) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); return; }
+  msg.classList.remove('show');
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  const data = collectData();
+
+  // Save to localStorage as fallback
+  const stored = JSON.parse(localStorage.getItem('elevatedReviews') || '[]');
+  stored.push(data);
+  localStorage.setItem('elevatedReviews', JSON.stringify(stored));
+
+  // Try Google Apps Script
+  if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch(err) { console.log('Google Script error:', err); }
+  }
+
+  // Try Netlify function
+  try { await fetch(NETLIFY_FN_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch(err) { console.log('Netlify fn error:', err); }
+
+  // Show thank you
+  document.getElementById('reviewForm').style.display = 'none';
+  const ty = document.getElementById('thankYou');
+  ty.classList.add('show');
+  progressBar.style.width = '100%';
+});
+
+// ─── Admin Mode ───
+if (new URLSearchParams(window.location.search).get('admin') === 'true') {
+  const bar = document.getElementById('adminBar');
+  bar.classList.add('show');
+  const stored = JSON.parse(localStorage.getItem('elevatedReviews') || '[]');
+  document.getElementById('responseCount').textContent = stored.length + ' responses stored locally';
+}
+
+function exportCSV() {
+  const stored = JSON.parse(localStorage.getItem('elevatedReviews') || '[]');
+  if (!stored.length) { alert('No responses yet.'); return; }
+  const headers = Object.keys(stored[0]);
+  const csv = [headers.join(','), ...stored.map(row => headers.map(h => {
+    let v = row[h] ?? '';
+    v = String(v).replace(/"/g, '""');
+    return `"${v}"`;
+  }).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'elevated-coffee-reviews.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
