@@ -452,6 +452,12 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
   </div>
 </div>
 
+<!-- Hidden form for Google Sheets submission (bypasses CORS) -->
+<form id="hidden-gs-form" method="POST" target="hidden-gs-iframe" style="display:none">
+  <input type="hidden" name="data" id="gs-form-data">
+</form>
+<iframe name="hidden-gs-iframe" style="display:none"></iframe>
+
 <!-- Admin Export Bar (visible with ?admin=true) -->
 <div class="admin-bar" id="adminBar">
   <button onclick="exportCSV()">Export All Responses as CSV</button>
@@ -624,19 +630,16 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   stored.push(data);
   localStorage.setItem('elevatedReviews', JSON.stringify(stored));
 
-  // Try Google Apps Script
+  // Try Google Apps Script via hidden iframe form POST (bypasses CORS + auth redirect)
   if (GOOGLE_SCRIPT_URL) {
-    console.log('[ElevatedCoffee] Sending to Google Sheets...', data);
+    console.log('[ElevatedCoffee] Sending to Google Sheets via form POST...', data);
     try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        redirect: 'follow',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(data)
-      });
-      console.log('[ElevatedCoffee] Google Sheets fetch completed');
-    } catch(err) { console.log('Google Script error:', err); }
+      const form = document.getElementById('hidden-gs-form');
+      form.action = GOOGLE_SCRIPT_URL;
+      document.getElementById('gs-form-data').value = JSON.stringify(data);
+      form.submit();
+      console.log('[ElevatedCoffee] Google Sheets form POST submitted');
+    } catch(err) { console.log('Google Script form error:', err); }
   }
 
   // Try Netlify function
