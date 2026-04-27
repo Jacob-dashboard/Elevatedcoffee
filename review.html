@@ -111,6 +111,14 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 }
 .toggle-btn.active-yes{background:var(--gold);color:var(--espresso)}
 .toggle-btn.active-no{background:rgba(200,169,110,.15);color:var(--cream)}
+/* Calorie Table */
+.calorie-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:4px}
+.calorie-table th{text-align:left;padding:8px 12px;color:var(--gold);font-weight:600;font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid rgba(200,169,110,.25)}
+.calorie-table th:not(:first-child){text-align:center}
+.calorie-table td{padding:9px 12px;color:var(--cream);border-bottom:1px solid rgba(200,169,110,.07)}
+.calorie-table td:not(:first-child){text-align:center;color:var(--text-muted)}
+.calorie-table td strong{color:var(--cream)}
+.calorie-table tr:last-child td{border-bottom:none}
 /* Submit */
 .submit-btn{
   display:block;width:100%;padding:16px;border:none;border-radius:var(--radius);
@@ -173,129 +181,23 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
   <form id="reviewForm" novalidate>
 
-    <!-- Section 1: About You -->
+    <!-- Section 1: Rate Our Flavors -->
     <div class="form-section" data-section="1">
       <div class="section-number">Step 1 of 6</div>
-      <div class="section-title">About You</div>
-      <label class="field-label">Age Range <span style="color:var(--text-muted);font-weight:300">(optional)</span></label>
-      <select id="ageRange" name="ageRange">
-        <option value="">Prefer not to say</option>
-        <option value="Under 21">Under 21</option>
-        <option value="21-25">21–25</option>
-        <option value="26-30">26–30</option>
-        <option value="31-35">31–35</option>
-        <option value="36-40">36–40</option>
-        <option value="41-50">41–50</option>
-        <option value="51+">51+</option>
-      </select>
-    </div>
-
-    <!-- Section 2: Price Sensitivity -->
-    <div class="form-section" data-section="2">
-      <div class="section-number">Step 2 of 6</div>
-      <div class="section-title">Price Sensitivity</div>
-      <p class="section-desc">What would you be willing to pay for a single can of Elevated Coffee?</p>
-      <div class="radio-group" id="priceGroup">
-        <label class="radio-option" data-value="$3.75-$4.00">
-          <input type="radio" name="price" value="$3.75-$4.00">
-          <span class="radio-dot"></span>
-          <span class="radio-label">$3.75 – $4.00</span>
-        </label>
-        <label class="radio-option" data-value="$4.01-$4.25">
-          <input type="radio" name="price" value="$4.01-$4.25">
-          <span class="radio-dot"></span>
-          <span class="radio-label">$4.01 – $4.25</span>
-        </label>
-        <label class="radio-option" data-value="$4.26-$4.50">
-          <input type="radio" name="price" value="$4.26-$4.50">
-          <span class="radio-dot"></span>
-          <span class="radio-label">$4.26 – $4.50</span>
-        </label>
-        <label class="radio-option" data-value="$4.51-$4.75">
-          <input type="radio" name="price" value="$4.51-$4.75">
-          <span class="radio-dot"></span>
-          <span class="radio-label">$4.51 – $4.75</span>
-        </label>
-        <label class="radio-option" data-value="$4.76-$5.00">
-          <input type="radio" name="price" value="$4.76-$5.00">
-          <span class="radio-dot"></span>
-          <span class="radio-label">$4.76 – $5.00</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Section 3: Can Size Preference -->
-    <div class="form-section" data-section="3">
-      <div class="section-number">Step 3 of 6</div>
-      <div class="section-title">Can Size Preference</div>
-      <p class="section-desc">Which can size would you gravitate towards?</p>
-      <!-- Size comparison graphic -->
-      <div style="display:flex;justify-content:center;gap:32px;margin-bottom:20px">
-        <div style="text-align:center">
-          <div style="width:36px;height:90px;background:linear-gradient(180deg,var(--gold),var(--caramel));border-radius:4px 4px 2px 2px;margin:0 auto 8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)">
-            <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:.35rem;color:var(--espresso);font-weight:700;letter-spacing:.5px;white-space:nowrap">EC</div>
-          </div>
-          <div style="font-size:.65rem;color:var(--text-muted)">8.4 oz</div>
-        </div>
-        <div style="text-align:center">
-          <div style="width:44px;height:110px;background:linear-gradient(180deg,var(--gold),var(--caramel));border-radius:4px 4px 2px 2px;margin:0 auto 8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)">
-            <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:.4rem;color:var(--espresso);font-weight:700;letter-spacing:.5px;white-space:nowrap">EC</div>
-          </div>
-          <div style="font-size:.65rem;color:var(--text-muted)">12 oz</div>
-        </div>
-      </div>
-      <div class="radio-group" id="canSizeGroup">
-        <label class="radio-option" data-value="8.4 oz (slim can)">
-          <input type="radio" name="canSize" value="8.4 oz (slim can)">
-          <span class="radio-dot"></span>
-          <span class="radio-label">8.4 oz (slim can)</span>
-        </label>
-        <label class="radio-option" data-value="12 oz (standard can)">
-          <input type="radio" name="canSize" value="12 oz (standard can)">
-          <span class="radio-dot"></span>
-          <span class="radio-label">12 oz (standard can)</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Section 4: Calorie Preference -->
-    <div class="form-section" data-section="4">
-      <div class="section-number">Step 4 of 6</div>
-      <div class="section-title">Calorie Preference</div>
-      <p class="section-desc">How important are calories when choosing a ready-to-drink coffee?</p>
-      <div class="radio-group" id="calorieGroup">
-        <label class="radio-option" data-value="Very important">
-          <input type="radio" name="calorieImportance" value="Very important">
-          <span class="radio-dot"></span>
-          <span class="radio-label">Very important</span>
-        </label>
-        <label class="radio-option" data-value="Somewhat important">
-          <input type="radio" name="calorieImportance" value="Somewhat important">
-          <span class="radio-dot"></span>
-          <span class="radio-label">Somewhat important</span>
-        </label>
-        <label class="radio-option" data-value="Not important">
-          <input type="radio" name="calorieImportance" value="Not important">
-          <span class="radio-dot"></span>
-          <span class="radio-label">Not important</span>
-        </label>
-      </div>
-      <div style="margin-top:16px;padding:14px 16px;background:var(--espresso);border:1px dashed rgba(200,169,110,.2);border-radius:var(--radius-sm)">
-        <div style="font-size:.7rem;color:var(--gold);font-weight:500;margin-bottom:4px">Coming Soon</div>
-        <div style="font-size:.75rem;color:var(--text-muted);line-height:1.5">Calorie counts per SKU coming soon — we'll update this section with exact numbers and a preference question.</div>
-        <!-- PLACEHOLDER: Jacob — replace this block with actual calorie data per SKU
-             Suggested format:
-             - Black Coffee: XX cal
-             - Vanilla Oat: XX cal
-             - Caramel Latte: XX cal
-             Then add: "Knowing the calorie count, which SKU appeals most?" with radio buttons for each flavor -->
-      </div>
-    </div>
-
-    <!-- Section 5: Flavor Ratings -->
-    <div class="form-section" data-section="5">
-      <div class="section-number">Step 5 of 6</div>
       <div class="section-title">Rate Our Flavors</div>
+
+      <div class="flavor-card" data-flavor="blackCoffeeNoAdj">
+        <div class="flavor-name">Black Coffee (No Adjustment)</div>
+        <div class="flavor-hint">1 = Not for me &nbsp;·&nbsp; 5 = I need this in my life</div>
+        <div class="stars" data-rating="0">
+          <svg class="star" data-star="1" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="4" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <label class="havent-tried"><input type="checkbox" data-skip="blackCoffeeNoAdj"> Haven't tried this one</label>
+      </div>
 
       <div class="flavor-card" data-flavor="blackCoffee">
         <div class="flavor-name">Black Coffee</div>
@@ -334,6 +236,164 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
           <svg class="star" data-star="5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01z"/></svg>
         </div>
         <label class="havent-tried"><input type="checkbox" data-skip="caramelLatte"> Haven't tried this one</label>
+      </div>
+    </div>
+
+    <!-- Section 2: About You -->
+    <div class="form-section" data-section="2">
+      <div class="section-number">Step 2 of 6</div>
+      <div class="section-title">About You</div>
+      <label class="field-label">Age Range <span style="color:var(--text-muted);font-weight:300">(optional)</span></label>
+      <select id="ageRange" name="ageRange">
+        <option value="">Prefer not to say</option>
+        <option value="Under 21">Under 21</option>
+        <option value="21-25">21–25</option>
+        <option value="26-30">26–30</option>
+        <option value="31-35">31–35</option>
+        <option value="36-40">36–40</option>
+        <option value="41-50">41–50</option>
+        <option value="51+">51+</option>
+      </select>
+    </div>
+
+    <!-- Section 3: Price Sensitivity -->
+    <div class="form-section" data-section="3">
+      <div class="section-number">Step 3 of 6</div>
+      <div class="section-title">Price Sensitivity</div>
+      <p class="section-desc">What would you be willing to pay for a single can of Elevated Coffee?</p>
+      <div class="radio-group" id="priceGroup">
+        <label class="radio-option" data-value="$3.75-$4.00">
+          <input type="radio" name="price" value="$3.75-$4.00">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$3.75 – $4.00</span>
+        </label>
+        <label class="radio-option" data-value="$4.01-$4.25">
+          <input type="radio" name="price" value="$4.01-$4.25">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.01 – $4.25</span>
+        </label>
+        <label class="radio-option" data-value="$4.26-$4.50">
+          <input type="radio" name="price" value="$4.26-$4.50">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.26 – $4.50</span>
+        </label>
+        <label class="radio-option" data-value="$4.51-$4.75">
+          <input type="radio" name="price" value="$4.51-$4.75">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.51 – $4.75</span>
+        </label>
+        <label class="radio-option" data-value="$4.76-$5.00">
+          <input type="radio" name="price" value="$4.76-$5.00">
+          <span class="radio-dot"></span>
+          <span class="radio-label">$4.76 – $5.00</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 4: Can Size Preference -->
+    <div class="form-section" data-section="4">
+      <div class="section-number">Step 4 of 6</div>
+      <div class="section-title">Can Size Preference</div>
+      <p class="section-desc">Which can size would you gravitate towards?</p>
+      <!-- Size comparison graphic -->
+      <div style="display:flex;justify-content:center;gap:32px;margin-bottom:20px">
+        <div style="text-align:center">
+          <div style="width:36px;height:90px;background:linear-gradient(180deg,var(--gold),var(--caramel));border-radius:4px 4px 2px 2px;margin:0 auto 8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)">
+            <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:.35rem;color:var(--espresso);font-weight:700;letter-spacing:.5px;white-space:nowrap">EC</div>
+          </div>
+          <div style="font-size:.65rem;color:var(--text-muted)">8.4 oz</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:44px;height:110px;background:linear-gradient(180deg,var(--gold),var(--caramel));border-radius:4px 4px 2px 2px;margin:0 auto 8px;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.3)">
+            <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:.4rem;color:var(--espresso);font-weight:700;letter-spacing:.5px;white-space:nowrap">EC</div>
+          </div>
+          <div style="font-size:.65rem;color:var(--text-muted)">12 oz</div>
+        </div>
+      </div>
+      <div class="radio-group" id="canSizeGroup">
+        <label class="radio-option" data-value="8.4 oz (slim can)">
+          <input type="radio" name="canSize" value="8.4 oz (slim can)">
+          <span class="radio-dot"></span>
+          <span class="radio-label">8.4 oz (slim can)</span>
+        </label>
+        <label class="radio-option" data-value="12 oz (standard can)">
+          <input type="radio" name="canSize" value="12 oz (standard can)">
+          <span class="radio-dot"></span>
+          <span class="radio-label">12 oz (standard can)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 5: Calorie Preference -->
+    <div class="form-section" data-section="5">
+      <div class="section-number">Step 5 of 6</div>
+      <div class="section-title">Calorie Preference</div>
+      <p class="section-desc">How important are calories when choosing a ready-to-drink coffee?</p>
+      <div class="radio-group" id="calorieGroup">
+        <label class="radio-option" data-value="Very important">
+          <input type="radio" name="calorieImportance" value="Very important">
+          <span class="radio-dot"></span>
+          <span class="radio-label">Very important</span>
+        </label>
+        <label class="radio-option" data-value="Somewhat important">
+          <input type="radio" name="calorieImportance" value="Somewhat important">
+          <span class="radio-dot"></span>
+          <span class="radio-label">Somewhat important</span>
+        </label>
+        <label class="radio-option" data-value="Not important">
+          <input type="radio" name="calorieImportance" value="Not important">
+          <span class="radio-dot"></span>
+          <span class="radio-label">Not important</span>
+        </label>
+      </div>
+      <div style="margin-top:20px;padding:18px;background:var(--espresso);border:1px solid rgba(200,169,110,.18);border-radius:var(--radius-sm)">
+        <div style="font-size:.7rem;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">Calories Per Serving</div>
+        <table class="calorie-table">
+          <thead>
+            <tr>
+              <th>Flavor</th>
+              <th>12 oz</th>
+              <th>8.4 oz</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Black</td>
+              <td><strong>50 cal</strong></td>
+              <td>~35 cal</td>
+            </tr>
+            <tr>
+              <td>Vanilla Oat</td>
+              <td><strong>150 cal</strong></td>
+              <td>~100 cal</td>
+            </tr>
+            <tr>
+              <td>Caramel Latte</td>
+              <td><strong>180 cal</strong></td>
+              <td>~120 cal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:20px">
+        <label class="field-label">Knowing the calorie count, which can size do you prefer?</label>
+        <div class="radio-group" id="calorieSizeGroup">
+          <label class="radio-option" data-value="12 oz">
+            <input type="radio" name="calorieSizePreference" value="12 oz">
+            <span class="radio-dot"></span>
+            <span class="radio-label">12 oz</span>
+          </label>
+          <label class="radio-option" data-value="8.4 oz">
+            <input type="radio" name="calorieSizePreference" value="8.4 oz">
+            <span class="radio-dot"></span>
+            <span class="radio-label">8.4 oz</span>
+          </label>
+          <label class="radio-option" data-value="No preference">
+            <input type="radio" name="calorieSizePreference" value="No preference">
+            <span class="radio-dot"></span>
+            <span class="radio-label">No preference</span>
+          </label>
+        </div>
       </div>
     </div>
 
@@ -411,13 +471,9 @@ const progressBar = document.getElementById('progressBar');
 
 function updateProgress() {
   let filled = 0;
-  const total = 6;
+  const total = 7;
   // Check each section for input
-  if (document.getElementById('ageRange').value) filled += 1;
-  if (document.querySelector('input[name="price"]:checked')) filled += 1;
-  if (document.querySelector('input[name="canSize"]:checked')) filled += 1;
-  if (document.querySelector('input[name="calorieImportance"]:checked')) filled += 1;
-  const flavors = ['blackCoffee','vanillaOat','caramelLatte'];
+  const flavors = ['blackCoffeeNoAdj','blackCoffee','vanillaOat','caramelLatte'];
   let flavorFilled = false;
   flavors.forEach(f => {
     const card = document.querySelector(`[data-flavor="${f}"]`);
@@ -426,6 +482,11 @@ function updateProgress() {
     if (parseInt(stars.dataset.rating) > 0 || (skip && skip.checked)) flavorFilled = true;
   });
   if (flavorFilled) filled += 1;
+  if (document.getElementById('ageRange').value) filled += 1;
+  if (document.querySelector('input[name="price"]:checked')) filled += 1;
+  if (document.querySelector('input[name="canSize"]:checked')) filled += 1;
+  if (document.querySelector('input[name="calorieImportance"]:checked')) filled += 1;
+  if (document.querySelector('input[name="calorieSizePreference"]:checked')) filled += 1;
   const toggles = document.querySelectorAll('.toggle-group');
   let anyToggle = false;
   toggles.forEach(t => { if (t.dataset.value) anyToggle = true; });
@@ -518,7 +579,9 @@ function collectData() {
   data.canSize = canSizeEl ? canSizeEl.value : '';
   const calEl = document.querySelector('input[name="calorieImportance"]:checked');
   data.calorieImportance = calEl ? calEl.value : '';
-  ['blackCoffee','vanillaOat','caramelLatte'].forEach(f => {
+  const calSizeEl = document.querySelector('input[name="calorieSizePreference"]:checked');
+  data.calorieSizePreference = calSizeEl ? calSizeEl.value : '';
+  ['blackCoffeeNoAdj','blackCoffee','vanillaOat','caramelLatte'].forEach(f => {
     const card = document.querySelector(`[data-flavor="${f}"]`);
     const skip = card.querySelector(`[data-skip="${f}"]`);
     if (skip && skip.checked) { data[f] = 'Haven\'t tried'; }
@@ -534,7 +597,7 @@ function collectData() {
 function validate() {
   const price = document.querySelector('input[name="price"]:checked');
   if (!price) return false;
-  const flavors = ['blackCoffee','vanillaOat','caramelLatte'];
+  const flavors = ['blackCoffeeNoAdj','blackCoffee','vanillaOat','caramelLatte'];
   let atLeastOne = false;
   flavors.forEach(f => {
     const card = document.querySelector(`[data-flavor="${f}"]`);

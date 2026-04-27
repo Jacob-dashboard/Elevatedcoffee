@@ -75,6 +75,7 @@ canvas{max-width:100%}
   <!-- Stats -->
   <div class="stats" id="statsGrid">
     <div class="stat-card"><div class="stat-value" id="totalCount">0</div><div class="stat-label">Total Responses</div></div>
+    <div class="stat-card"><div class="stat-value" id="avgBlackNoAdj">—</div><div class="stat-label">Avg. Black No Adj</div></div>
     <div class="stat-card"><div class="stat-value" id="avgBlack">—</div><div class="stat-label">Avg. Black Coffee</div></div>
     <div class="stat-card"><div class="stat-value" id="avgVanilla">—</div><div class="stat-label">Avg. Vanilla Oat</div></div>
     <div class="stat-card"><div class="stat-value" id="avgCaramel">—</div><div class="stat-label">Avg. Caramel Latte</div></div>
@@ -107,6 +108,11 @@ canvas{max-width:100%}
     <div class="chart-card">
       <div class="chart-title">Calorie Importance</div>
       <div class="bar-chart" id="calorieBars"></div>
+    </div>
+    <!-- Can Size After Calories -->
+    <div class="chart-card">
+      <div class="chart-title">Can Size After Seeing Calories</div>
+      <div class="bar-chart" id="calorieSizeBars"></div>
     </div>
     <!-- Adaptogen Awareness -->
     <div class="chart-card">
@@ -164,12 +170,14 @@ function render() {
   document.getElementById('totalCount').textContent = n;
 
   // Averages
+  const bnAdj = avg(allData.map(r => r.blackCoffeeNoAdj));
   const bAvg = avg(allData.map(r => r.blackCoffee));
   const vAvg = avg(allData.map(r => r.vanillaOat));
   const cAvg = avg(allData.map(r => r.caramelLatte));
   const waAvg = avg(allData.map(r => r.websiteAesthetics));
   const wfAvg = avg(allData.map(r => r.websiteFunctionality));
 
+  document.getElementById('avgBlackNoAdj').textContent = bnAdj ? bnAdj + '/5' : '—';
   document.getElementById('avgBlack').textContent = bAvg ? bAvg + '/5' : '—';
   document.getElementById('avgVanilla').textContent = vAvg ? vAvg + '/5' : '—';
   document.getElementById('avgCaramel').textContent = cAvg ? cAvg + '/5' : '—';
@@ -178,6 +186,7 @@ function render() {
 
   // Flavor bar chart
   document.getElementById('flavorBars').innerHTML =
+    makeBarRating('Black No Adj', bnAdj) +
     makeBarRating('Black Coffee', bAvg) +
     makeBarRating('Vanilla Oat', vAvg) +
     makeBarRating('Caramel Latte', cAvg);
@@ -212,6 +221,14 @@ function render() {
   const maxCal = Math.max(...calLevels.map(l => calCounts[l] || 0), 1);
   document.getElementById('calorieBars').innerHTML = calLevels.map(l =>
     makeBar(l, calCounts[l] || 0, maxCal)
+  ).join('');
+
+  // Can size after seeing calories
+  const calSizes = ['12 oz', '8.4 oz', 'No preference'];
+  const calSizeCounts = countBy(allData, 'calorieSizePreference');
+  const maxCalSize = Math.max(...calSizes.map(s => calSizeCounts[s] || 0), 1);
+  document.getElementById('calorieSizeBars').innerHTML = calSizes.map(s =>
+    makeBar(s, calSizeCounts[s] || 0, maxCalSize)
   ).join('');
 
   // Adaptogen awareness
