@@ -630,6 +630,7 @@ document.getElementById('reviewForm').addEventListener('submit', (e) => {
 
   // Submit via sendBeacon — sends with browser cookies, no CORS preflight
   if (GOOGLE_SCRIPT_URL) {
+    console.log('[ElevatedCoffee] Payload:', JSON.stringify(data));
     console.log('[ElevatedCoffee] Sending to Google Sheets via sendBeacon...', data);
     const blob = new Blob([JSON.stringify(data)], { type: 'text/plain' });
     navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
