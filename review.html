@@ -629,6 +629,7 @@ document.getElementById('reviewForm').addEventListener('submit', (e) => {
   isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
+  btn.textContent = 'Submitting...';
   btn.classList.add('loading');
   const data = collectData();
 
