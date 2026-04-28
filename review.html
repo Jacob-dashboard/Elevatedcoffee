@@ -615,14 +615,17 @@ function validate() {
 }
 
 // ─── Submit ───
-document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+let isSubmitting = false;
+document.getElementById('reviewForm').addEventListener('submit', (e) => {
   e.preventDefault();
+  if (isSubmitting) return;
   const msg = document.getElementById('validationMsg');
   if (!validate()) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); return; }
   msg.classList.remove('show');
+  isSubmitting = true;
   const btn = document.getElementById('submitBtn');
-  btn.classList.add('loading');
   btn.disabled = true;
+  btn.classList.add('loading');
   const data = collectData();
 
   // Save to localStorage as fallback
@@ -630,20 +633,15 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   stored.push(data);
   localStorage.setItem('elevatedReviews', JSON.stringify(stored));
 
-  // Try Google Apps Script via hidden iframe form POST (bypasses CORS + auth redirect)
+  // Submit via hidden iframe form POST (bypasses CORS + auth redirect)
   if (GOOGLE_SCRIPT_URL) {
     console.log('[ElevatedCoffee] Sending to Google Sheets via form POST...', data);
-    try {
-      const form = document.getElementById('hidden-gs-form');
-      form.action = GOOGLE_SCRIPT_URL;
-      document.getElementById('gs-form-data').value = JSON.stringify(data);
-      form.submit();
-      console.log('[ElevatedCoffee] Google Sheets form POST submitted');
-    } catch(err) { console.log('Google Script form error:', err); }
+    const form = document.getElementById('hidden-gs-form');
+    form.action = GOOGLE_SCRIPT_URL;
+    document.getElementById('gs-form-data').value = JSON.stringify(data);
+    form.submit();
+    console.log('[ElevatedCoffee] Google Sheets form POST submitted');
   }
-
-  // Try Netlify function
-  try { await fetch(NETLIFY_FN_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch(err) { console.log('Netlify fn error:', err); }
 
   // Show thank you
   document.getElementById('reviewForm').style.display = 'none';
