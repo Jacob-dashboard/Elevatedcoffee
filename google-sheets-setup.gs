@@ -26,18 +26,18 @@ function doPost(e) {
 
   sheet.appendRow([
     data.timestamp || new Date().toISOString(),
-    data.ageRange || '',
+    data.age || '',
     data.price || '',
     data.canSize || '',
     data.calorieImportance || '',
     data.calorieSizePreference || '',
-    data.blackCoffeeNoAdj || '',
-    data.blackCoffee || '',
+    data.blackNoAdj || '',
+    data.black || '',
     data.vanillaOat || '',
     data.caramelLatte || '',
-    data.adaptogen_ashwagandha || '',
-    data.adaptogen_lionsMane || '',
-    data.adaptogen_lTheanine || ''
+    data.ashwagandha || '',
+    data.lionsMane || '',
+    data.ltheanine || ''
   ]);
 
   return ContentService.createTextOutput(JSON.stringify({status: 'success'}))

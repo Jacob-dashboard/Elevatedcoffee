@@ -569,7 +569,7 @@ document.getElementById('ageRange').addEventListener('change', updateProgress);
 // ─── Collect Data ───
 function collectData() {
   const data = { timestamp: new Date().toISOString() };
-  data.ageRange = document.getElementById('ageRange').value || '';
+  data.age = document.getElementById('ageRange').value || '';
   const priceEl = document.querySelector('input[name="price"]:checked');
   data.price = priceEl ? priceEl.value : '';
   const canSizeEl = document.querySelector('input[name="canSize"]:checked');
@@ -578,14 +578,18 @@ function collectData() {
   data.calorieImportance = calEl ? calEl.value : '';
   const calSizeEl = document.querySelector('input[name="calorieSizePreference"]:checked');
   data.calorieSizePreference = calSizeEl ? calSizeEl.value : '';
-  ['blackCoffeeNoAdj','blackCoffee','vanillaOat','caramelLatte'].forEach(f => {
-    const card = document.querySelector(`[data-flavor="${f}"]`);
-    const skip = card.querySelector(`[data-skip="${f}"]`);
-    if (skip && skip.checked) { data[f] = 'Haven\'t tried'; }
-    else { data[f] = parseInt(card.querySelector('.stars').dataset.rating) || 0; }
+  const flavorKeyMap = { blackCoffeeNoAdj: 'blackNoAdj', blackCoffee: 'black', vanillaOat: 'vanillaOat', caramelLatte: 'caramelLatte' };
+  Object.entries(flavorKeyMap).forEach(([flavor, key]) => {
+    const card = document.querySelector(`[data-flavor="${flavor}"]`);
+    const skip = card.querySelector(`[data-skip="${flavor}"]`);
+    if (skip && skip.checked) { data[key] = 'Haven\'t tried'; }
+    else { data[key] = parseInt(card.querySelector('.stars').dataset.rating) || 0; }
   });
+  const adaptogenKeyMap = { ashwagandha: 'ashwagandha', lionsMane: 'lionsMane', lTheanine: 'ltheanine' };
   document.querySelectorAll('.toggle-group').forEach(g => {
-    data['adaptogen_' + g.dataset.adaptogen] = g.dataset.value || '';
+    const attrKey = g.dataset.adaptogen;
+    const sheetKey = adaptogenKeyMap[attrKey] || attrKey;
+    data[sheetKey] = g.dataset.value || '';
   });
   return data;
 }
