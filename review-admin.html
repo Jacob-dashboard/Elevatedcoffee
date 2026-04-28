@@ -249,7 +249,7 @@ function render() {
 
   // Responses
   const list = document.getElementById('responsesList');
-  const withText = allData.filter(r => r.reviewText || r.suggestions).reverse();
+  const withText = allData.filter(r => r.reviewText || r.suggestions || r.comments).reverse();
   if (!withText.length) {
     list.innerHTML = '<div class="no-data">No text responses yet.</div>';
     return;
@@ -259,7 +259,8 @@ function render() {
     const age = r.ageRange || '—';
     const price = r.price || '—';
     let text = '';
-    if (r.reviewText) text += r.reviewText;
+    if (r.comments) text += '<strong>Flavor Notes:</strong> ' + r.comments;
+    if (r.reviewText) text += (text ? '<br><br>' : '') + r.reviewText;
     if (r.suggestions) text += (text ? '<br><br><strong>Suggestions:</strong> ' : '') + r.suggestions;
     return `<div class="response-card">
       <div class="response-meta"><span>${date}</span><span>Age: ${age}</span><span>Price: ${price}</span></div>

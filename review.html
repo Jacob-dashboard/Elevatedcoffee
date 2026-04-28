@@ -239,9 +239,17 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
       </div>
     </div>
 
+    <!-- Section 1.5: Flavor Notes & Feedback -->
+    <div class="form-section" data-section="1.5">
+      <div class="section-number">Step 2 of 7</div>
+      <div class="section-title">Flavor Notes &amp; Feedback</div>
+      <p class="section-desc">Any thoughts on taste, sweetness, texture, or suggestions?</p>
+      <textarea id="flavorNotes" name="flavorNotes" rows="4" placeholder="e.g. 'Black was too sweet', 'Caramel was perfectly creamy', 'Would love a mocha flavor'..."></textarea>
+    </div>
+
     <!-- Section 2: About You -->
     <div class="form-section" data-section="2">
-      <div class="section-number">Step 2 of 6</div>
+      <div class="section-number">Step 3 of 7</div>
       <div class="section-title">About You</div>
       <label class="field-label">Age Range <span style="color:var(--text-muted);font-weight:300">(optional)</span></label>
       <select id="ageRange" name="ageRange">
@@ -258,7 +266,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 3: Price Sensitivity -->
     <div class="form-section" data-section="3">
-      <div class="section-number">Step 3 of 6</div>
+      <div class="section-number">Step 4 of 7</div>
       <div class="section-title">Price Sensitivity</div>
       <p class="section-desc">What would you be willing to pay for a single can of Elevated Coffee?</p>
       <div class="radio-group" id="priceGroup">
@@ -292,7 +300,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 4: Can Size Preference -->
     <div class="form-section" data-section="4">
-      <div class="section-number">Step 4 of 6</div>
+      <div class="section-number">Step 5 of 7</div>
       <div class="section-title">Can Size Preference</div>
       <p class="section-desc">Which can size would you gravitate towards?</p>
       <!-- Size comparison graphic -->
@@ -326,7 +334,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 5: Calorie Preference -->
     <div class="form-section" data-section="5">
-      <div class="section-number">Step 5 of 6</div>
+      <div class="section-number">Step 6 of 7</div>
       <div class="section-title">Calorie Preference</div>
       <p class="section-desc">How important are calories when choosing a ready-to-drink coffee?</p>
       <div class="radio-group" id="calorieGroup">
@@ -399,7 +407,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 6: Adaptogens -->
     <div class="form-section" data-section="8">
-      <div class="section-number">Step 6 of 6</div>
+      <div class="section-number">Step 7 of 7</div>
       <div class="section-title">Have You Heard of These Adaptogens?</div>
       <p class="section-desc">Elevated Coffee is powered by three functional ingredients. Have you heard of them before?</p>
 
@@ -591,6 +599,7 @@ function collectData() {
     const sheetKey = adaptogenKeyMap[attrKey] || attrKey;
     data[sheetKey] = g.dataset.value || '';
   });
+  data.comments = document.getElementById('flavorNotes').value.trim() || '';
   return data;
 }
 
@@ -669,4 +678,20 @@ function exportCSV() {
 }
 </script>
 </body>
+<!-- UPDATED GOOGLE APPS SCRIPT - paste this into your Apps Script editor and redeploy:
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['Timestamp','Age','Price','Can Size','Calorie Importance','Calorie Size Pref','Black No Adj','Black','Vanilla Oat','Caramel Latte','Ashwagandha','Lions Mane','L-Theanine','Comments']);
+  }
+  sheet.appendRow([
+    new Date().toISOString(),
+    data.age||'',data.price||'',data.canSize||'',data.calorieImportance||'',data.calorieSizePreference||'',
+    data.blackNoAdj||'',data.black||'',data.vanillaOat||'',data.caramelLatte||'',
+    data.ashwagandha||'',data.lionsMane||'',data.ltheanine||'',data.comments||''
+  ]);
+  return ContentService.createTextOutput(JSON.stringify({status:'success'})).setMimeType(ContentService.MimeType.JSON);
+}
+-->
 </html>
