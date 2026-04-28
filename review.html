@@ -452,12 +452,6 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
   </div>
 </div>
 
-<!-- Hidden form for Google Sheets submission (bypasses CORS) -->
-<form id="hidden-gs-form" method="POST" target="hidden-gs-iframe" style="display:none">
-  <input type="hidden" name="data" id="gs-form-data">
-</form>
-<iframe name="hidden-gs-iframe" style="display:none"></iframe>
-
 <!-- Admin Export Bar (visible with ?admin=true) -->
 <div class="admin-bar" id="adminBar">
   <button onclick="exportCSV()">Export All Responses as CSV</button>
@@ -466,10 +460,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
 <script>
 // ─── CONFIG ───
-// Replace this URL with your deployed Google Apps Script web app URL
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbye2NteRqgM9LUCg5_GICG-L_u-nOB-LxQrA_hRzQ9JU1DAI9fEUjy20p5xgee9G1cB8w/exec';
-// Replace with your Netlify function URL (auto-detected if on Netlify)
-const NETLIFY_FN_URL = '/.netlify/functions/submit-review';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtxHUqvk8g8H1bNwxG-ItjcIa_6HW8A85L3fqrYSAvSQYkduxn2amPGySUwx1yunNbxg/exec';
 
 // ─── Progress Bar ───
 const sections = document.querySelectorAll('.form-section');
@@ -633,14 +624,12 @@ document.getElementById('reviewForm').addEventListener('submit', (e) => {
   stored.push(data);
   localStorage.setItem('elevatedReviews', JSON.stringify(stored));
 
-  // Submit via hidden iframe form POST (bypasses CORS + auth redirect)
+  // Submit via sendBeacon — sends with browser cookies, no CORS preflight
   if (GOOGLE_SCRIPT_URL) {
-    console.log('[ElevatedCoffee] Sending to Google Sheets via form POST...', data);
-    const form = document.getElementById('hidden-gs-form');
-    form.action = GOOGLE_SCRIPT_URL;
-    document.getElementById('gs-form-data').value = JSON.stringify(data);
-    form.submit();
-    console.log('[ElevatedCoffee] Google Sheets form POST submitted');
+    console.log('[ElevatedCoffee] Sending to Google Sheets via sendBeacon...', data);
+    const blob = new Blob([JSON.stringify(data)], { type: 'text/plain' });
+    navigator.sendBeacon(GOOGLE_SCRIPT_URL, blob);
+    console.log('[ElevatedCoffee] Google Sheets sendBeacon dispatched');
   }
 
   // Show thank you
