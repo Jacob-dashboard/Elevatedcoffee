@@ -94,6 +94,42 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 }
 .havent-tried input{accent-color:var(--gold);width:14px;height:14px}
 .havent-tried.checked{color:var(--gold)}
+/* Checkbox Group */
+.checkbox-group{display:flex;flex-direction:column;gap:10px}
+.checkbox-option{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:var(--espresso);border:1px solid rgba(200,169,110,.15);
+  border-radius:var(--radius-sm);cursor:pointer;transition:all .25s ease;
+  font-size:.85rem;color:var(--cream);
+}
+.checkbox-option:hover{border-color:var(--gold);background:var(--espresso-mid)}
+.checkbox-option.selected{border-color:var(--gold);background:rgba(200,169,110,.08)}
+.checkbox-option input[type="checkbox"]{
+  appearance:none;-webkit-appearance:none;width:20px;height:20px;
+  border:2px solid var(--text-muted);border-radius:4px;background:var(--espresso);
+  cursor:pointer;position:relative;flex-shrink:0;transition:all .25s ease;margin:0;
+}
+.checkbox-option input[type="checkbox"]:checked{background:var(--gold);border-color:var(--gold)}
+.checkbox-option input[type="checkbox"]:checked::after{
+  content:'';position:absolute;left:5px;top:1px;width:5px;height:10px;
+  border:solid var(--espresso);border-width:0 2px 2px 0;transform:rotate(45deg);
+}
+/* Purchase Buttons */
+.purchase-group{display:flex;gap:12px;justify-content:space-between}
+.purchase-option{
+  flex:1;text-align:center;padding:18px 12px;
+  background:var(--espresso);border:2px solid rgba(200,169,110,.2);
+  border-radius:var(--radius);cursor:pointer;transition:all .25s ease;
+  font-family:'Playfair Display',serif;font-weight:600;font-size:1.05rem;color:var(--cream);
+  letter-spacing:.5px;
+}
+.purchase-option:hover{border-color:var(--gold);background:var(--espresso-mid);transform:translateY(-2px)}
+.purchase-option.selected{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,var(--gold),var(--caramel));
+  color:var(--espresso);box-shadow:0 6px 18px rgba(200,169,110,.3);
+}
+.purchase-option input{display:none}
 /* Toggle */
 .adaptogen-row{
   display:flex;align-items:center;justify-content:space-between;
@@ -183,7 +219,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 1: Rate Our Flavors -->
     <div class="form-section" data-section="1">
-      <div class="section-number">Step 1 of 6</div>
+      <div class="section-number">Step 1 of 9</div>
       <div class="section-title">Rate Our Flavors</div>
 
       <div class="flavor-card" data-flavor="blackCoffeeNoAdj">
@@ -239,9 +275,30 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
       </div>
     </div>
 
+    <!-- Section 1.7: Would You Purchase -->
+    <div class="form-section" data-section="1.7">
+      <div class="section-number">Step 2 of 9</div>
+      <div class="section-title">Would You Purchase This Product?</div>
+      <p class="section-desc">Based on what you've tried, would you buy a can of Elevated Coffee?</p>
+      <div class="purchase-group" id="purchaseGroup">
+        <label class="purchase-option" data-value="Yes">
+          <input type="radio" name="wouldPurchase" value="Yes">
+          Yes
+        </label>
+        <label class="purchase-option" data-value="No">
+          <input type="radio" name="wouldPurchase" value="No">
+          No
+        </label>
+        <label class="purchase-option" data-value="Maybe">
+          <input type="radio" name="wouldPurchase" value="Maybe">
+          Maybe
+        </label>
+      </div>
+    </div>
+
     <!-- Section 1.5: Flavor Notes & Feedback -->
     <div class="form-section" data-section="1.5">
-      <div class="section-number">Step 2 of 7</div>
+      <div class="section-number">Step 3 of 9</div>
       <div class="section-title">Flavor Notes &amp; Feedback</div>
       <p class="section-desc">Any thoughts on taste, sweetness, texture, or suggestions?</p>
       <textarea id="flavorNotes" name="flavorNotes" rows="4" placeholder="e.g. 'Black was too sweet', 'Caramel was perfectly creamy', 'Would love a mocha flavor'..."></textarea>
@@ -249,7 +306,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 2: About You -->
     <div class="form-section" data-section="2">
-      <div class="section-number">Step 3 of 7</div>
+      <div class="section-number">Step 4 of 9</div>
       <div class="section-title">About You</div>
       <label class="field-label">Age Range <span style="color:var(--text-muted);font-weight:300">(optional)</span></label>
       <select id="ageRange" name="ageRange">
@@ -264,9 +321,30 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
       </select>
     </div>
 
+    <!-- Section 2.5: Coffee Drinking Habits -->
+    <div class="form-section" data-section="2.5">
+      <div class="section-number">Step 5 of 9</div>
+      <div class="section-title">How Do You Typically Drink Your Coffee?</div>
+      <p class="section-desc">Select all that apply</p>
+      <div class="checkbox-group" id="coffeeHabitGroup">
+        <label class="checkbox-option">
+          <input type="checkbox" name="coffeeHabit" value="Black"> Black
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" name="coffeeHabit" value="Black with sweetener"> Black with sweetener
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" name="coffeeHabit" value="With cream"> With cream
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" name="coffeeHabit" value="With cream and sweetener"> With cream and sweetener
+        </label>
+      </div>
+    </div>
+
     <!-- Section 3: Price Sensitivity -->
     <div class="form-section" data-section="3">
-      <div class="section-number">Step 4 of 7</div>
+      <div class="section-number">Step 6 of 9</div>
       <div class="section-title">Price Sensitivity</div>
       <p class="section-desc">What would you be willing to pay for a single can of Elevated Coffee?</p>
       <div class="radio-group" id="priceGroup">
@@ -300,7 +378,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 4: Can Size Preference -->
     <div class="form-section" data-section="4">
-      <div class="section-number">Step 5 of 7</div>
+      <div class="section-number">Step 7 of 9</div>
       <div class="section-title">Can Size Preference</div>
       <p class="section-desc">Which can size would you gravitate towards?</p>
       <!-- Size comparison graphic -->
@@ -334,7 +412,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 5: Calorie Preference -->
     <div class="form-section" data-section="5">
-      <div class="section-number">Step 6 of 7</div>
+      <div class="section-number">Step 8 of 9</div>
       <div class="section-title">Calorie Preference</div>
       <p class="section-desc">How important are calories when choosing a ready-to-drink coffee?</p>
       <div class="radio-group" id="calorieGroup">
@@ -407,7 +485,7 @@ textarea::placeholder{color:var(--text-muted);font-style:italic}
 
     <!-- Section 6: Adaptogens -->
     <div class="form-section" data-section="8">
-      <div class="section-number">Step 7 of 7</div>
+      <div class="section-number">Step 9 of 9</div>
       <div class="section-title">Have You Heard of These Adaptogens?</div>
       <p class="section-desc">Elevated Coffee is powered by three functional ingredients. Have you heard of them before?</p>
 
@@ -476,7 +554,7 @@ const progressBar = document.getElementById('progressBar');
 
 function updateProgress() {
   let filled = 0;
-  const total = 7;
+  const total = 9;
   // Check each section for input
   const flavors = ['blackCoffeeNoAdj','blackCoffee','vanillaOat','caramelLatte'];
   let flavorFilled = false;
@@ -487,7 +565,9 @@ function updateProgress() {
     if (parseInt(stars.dataset.rating) > 0 || (skip && skip.checked)) flavorFilled = true;
   });
   if (flavorFilled) filled += 1;
+  if (document.querySelector('input[name="wouldPurchase"]:checked')) filled += 1;
   if (document.getElementById('ageRange').value) filled += 1;
+  if (document.querySelector('input[name="coffeeHabit"]:checked')) filled += 1;
   if (document.querySelector('input[name="price"]:checked')) filled += 1;
   if (document.querySelector('input[name="canSize"]:checked')) filled += 1;
   if (document.querySelector('input[name="calorieImportance"]:checked')) filled += 1;
@@ -512,6 +592,29 @@ document.querySelectorAll('.radio-option').forEach(opt => {
     opt.classList.add('selected');
     opt.querySelector('input').checked = true;
     updateProgress();
+  });
+});
+
+// ─── Purchase Buttons ───
+document.querySelectorAll('.purchase-option').forEach(opt => {
+  opt.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT') {
+      const input = opt.querySelector('input');
+      input.checked = true;
+    }
+    opt.closest('.purchase-group').querySelectorAll('.purchase-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    updateProgress();
+  });
+});
+
+// ─── Coffee Habit Checkboxes ───
+document.querySelectorAll('.checkbox-option').forEach(opt => {
+  const cb = opt.querySelector('input[type="checkbox"]');
+  const sync = () => opt.classList.toggle('selected', cb.checked);
+  cb.addEventListener('change', () => { sync(); updateProgress(); });
+  opt.addEventListener('click', (e) => {
+    if (e.target !== cb) { cb.checked = !cb.checked; sync(); updateProgress(); }
   });
 });
 
@@ -586,6 +689,9 @@ function collectData() {
   data.calorieImportance = calEl ? calEl.value : '';
   const calSizeEl = document.querySelector('input[name="calorieSizePreference"]:checked');
   data.calorieSizePreference = calSizeEl ? calSizeEl.value : '';
+  data.coffeeHabits = Array.from(document.querySelectorAll('input[name="coffeeHabit"]:checked')).map(c => c.value).join(', ');
+  const wpEl = document.querySelector('input[name="wouldPurchase"]:checked');
+  data.wouldPurchase = wpEl ? wpEl.value : '';
   const flavorKeyMap = { blackCoffeeNoAdj: 'blackNoAdj', blackCoffee: 'black', vanillaOat: 'vanillaOat', caramelLatte: 'caramelLatte' };
   Object.entries(flavorKeyMap).forEach(([flavor, key]) => {
     const card = document.querySelector(`[data-flavor="${flavor}"]`);
@@ -680,17 +786,24 @@ function exportCSV() {
 </script>
 </body>
 <!-- UPDATED GOOGLE APPS SCRIPT - paste this into your Apps Script editor and redeploy:
+// Two new columns added: Coffee Habits, Would Purchase.
+// Add these two to the appendRow after data.comments:
+//   data.coffeeHabits || '',
+//   data.wouldPurchase || ''
+//
+// COMPLETE updated doPost function:
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Timestamp','Age','Price','Can Size','Calorie Importance','Calorie Size Pref','Black No Adj','Black','Vanilla Oat','Caramel Latte','Ashwagandha','Lions Mane','L-Theanine','Comments']);
+    sheet.appendRow(['Timestamp','Age','Price','Can Size','Calorie Importance','Calorie Size Pref','Black No Adj','Black','Vanilla Oat','Caramel Latte','Ashwagandha','Lions Mane','L-Theanine','Comments','Coffee Habits','Would Purchase']);
   }
   sheet.appendRow([
     new Date().toISOString(),
     data.age||'',data.price||'',data.canSize||'',data.calorieImportance||'',data.calorieSizePreference||'',
     data.blackNoAdj||'',data.black||'',data.vanillaOat||'',data.caramelLatte||'',
-    data.ashwagandha||'',data.lionsMane||'',data.ltheanine||'',data.comments||''
+    data.ashwagandha||'',data.lionsMane||'',data.ltheanine||'',data.comments||'',
+    data.coffeeHabits||'',data.wouldPurchase||''
   ]);
   return ContentService.createTextOutput(JSON.stringify({status:'success'})).setMimeType(ContentService.MimeType.JSON);
 }
