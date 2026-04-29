@@ -20,7 +20,10 @@ function doPost(e) {
       'Caramel Latte Rating',
       'Heard of Ashwagandha',
       'Heard of Lions Mane',
-      'Heard of L-Theanine'
+      'Heard of L-Theanine',
+      'Comments',
+      'Coffee Habits',
+      'Would Purchase'
     ]);
   }
 
@@ -37,7 +40,10 @@ function doPost(e) {
     data.caramelLatte || '',
     data.ashwagandha || '',
     data.lionsMane || '',
-    data.ltheanine || ''
+    data.ltheanine || '',
+    data.comments || '',
+    data.coffeeHabits || '',
+    data.wouldPurchase || ''
   ]);
 
   return ContentService.createTextOutput(JSON.stringify({status: 'success'}))
