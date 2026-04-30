@@ -317,8 +317,10 @@ const HEADER_MAP = {
   'calorie importance':              'calorieImportance',
   'calorie size preference':         'calorieSizePreference',
   'calorie size pref':               'calorieSizePreference',
+  'black no adj rating':             'blackNoAdj',
   'black coffee (no adj) rating':    'blackNoAdj',
   'black no adj':                    'blackNoAdj',
+  'black rating':                    'black',
   'black coffee rating':             'black',
   'black':                           'black',
   'vanilla oat rating':              'vanillaOat',
@@ -335,6 +337,7 @@ const HEADER_MAP = {
   'l-theanine':                      'ltheanine',
   'comments':                        'comments',
   'coffee habits':                   'coffeeHabits',
+  'coffe habits':                    'coffeeHabits',
   'would purchase':                  'wouldPurchase'
 };
 
@@ -353,19 +356,23 @@ async function loadData() {
   if (SHEET_CSV_URL) {
     banner.className = 'banner local';
     banner.textContent = 'Connecting to Google Sheets…';
+    console.log('[dashboard] fetching', SHEET_CSV_URL);
     try {
       const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
+      console.log('[dashboard] response', res.status, 'redirected:', res.redirected);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const txt = await res.text();
+      if (!txt || !txt.trim()) throw new Error('empty CSV body');
       const parsed = Papa.parse(txt, { header: true, skipEmptyLines: true });
-      if (parsed.errors.length) console.warn('CSV parse warnings', parsed.errors);
+      if (parsed.errors.length) console.warn('[dashboard] CSV parse warnings', parsed.errors);
       ALL = parsed.data.map(normalizeRow).filter(r => r.timestamp || r.age || r.price);
+      console.log('[dashboard] parsed rows:', parsed.data.length, 'usable:', ALL.length);
       banner.className = 'banner live';
-      banner.textContent = '✓ Connected to Google Sheets — ' + ALL.length + ' responses';
+      banner.textContent = '✅ Connected to Google Sheets — ' + ALL.length + ' responses';
     } catch (err) {
-      console.error('Sheet load failed', err);
+      console.error('[dashboard] Sheet load failed', err);
       banner.className = 'banner error';
-      banner.textContent = '⚠ Google Sheets unreachable (' + err.message + ') — falling back to local data';
+      banner.textContent = '⚠️ Could not connect to Google Sheets (' + err.message + ') — using local data';
       ALL = loadLocal();
     }
   } else {
