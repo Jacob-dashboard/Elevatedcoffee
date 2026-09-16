@@ -1308,23 +1308,9 @@ body {
   max-width: none;
   max-height: none;
   filter: none;
-  transform-origin: 50% 70%;
-  transition: transform 0.45s var(--ease);
+  transform: none;
 }
 .product-card:hover .product-card__can-img { transform: none; }
-.nutrition-hint { transition: background 0.2s var(--ease), transform 0.45s var(--ease); }
-
-/* Hover zoom only where a real mouse pointer exists and motion is welcome */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .product-card__can-wrap:hover .product-card__can-img,
-  .product-card__can-wrap:focus-visible .product-card__can-img {
-    transform: scale(1.35);
-  }
-  .product-card__can-wrap:hover .nutrition-hint,
-  .product-card__can-wrap:focus-visible .nutrition-hint {
-    transform: translateY(20px);
-  }
-}
 
 @media (max-width: 600px) {
   .product-card__can-wrap { padding: 36px 20px 20px; }
