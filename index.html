@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=nozoom1" />
+  <link rel="stylesheet" href="style.css?v=signup1" />
 </head>
 <body>
 
@@ -320,11 +320,16 @@
     <div class="container">
       <div class="cta__inner">
         <h2 class="cta__title">Ready to elevate?</h2>
-        <p class="cta__sub">Join thousands who've made the switch to smarter coffee.</p>
-        <form class="cta__form">
-          <input type="email" placeholder="Your email address" required />
+        <p class="cta__sub">Be the first to try Elevated when we launch.</p>
+        <form class="cta__form" novalidate>
+          <label class="visually-hidden" for="signupEmail">Email address</label>
+          <input id="signupEmail" type="email" name="email" placeholder="Your email address" autocomplete="email" required />
+          <!-- Hidden from people; bots that fill it are ignored -->
+          <input class="cta__hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <button type="submit" class="btn btn--cream">Get Early Access</button>
         </form>
+        <p class="cta__status" role="status" aria-live="polite"></p>
+        <p class="cta__fallback" hidden>Follow <a href="https://instagram.com/elevated_coffee.co" target="_blank" rel="noopener">@elevated_coffee.co</a> on Instagram for launch news.</p>
         <p class="cta__fine">No spam. Just drops, news, and the occasional good idea.</p>
       </div>
     </div>
@@ -368,6 +373,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=nozoom1"></script>
+  <script src="script.js?v=signup1"></script>
 </body>
 </html>

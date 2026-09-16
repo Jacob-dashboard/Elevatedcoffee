@@ -265,14 +265,71 @@ document.querySelectorAll('.nav__links a').forEach(link => {
 });
 
 // ─── Email form
-document.querySelector('.cta__form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const input = e.target.querySelector('input');
-  const btn = e.target.querySelector('button');
-  btn.textContent = 'You\'re on the list ✓';
-  btn.style.background = '#4B3228';
-  btn.style.color = 'var(--cream)';
-  input.value = '';
-  input.placeholder = 'Talk soon.';
-  input.disabled = true;
-});
+// Google Apps Script web app URL that saves signups to the "Elevated Coffee Early Access" sheet.
+// Leave empty until it's deployed: the form then points people to Instagram instead of
+// pretending to save their email.
+const SIGNUP_URL = '';
+
+(() => {
+  const form = document.querySelector('.cta__form');
+  if (!form) return;
+  const status = document.querySelector('.cta__status');
+  const fallback = document.querySelector('.cta__fallback');
+  const input = form.querySelector('input[name="email"]');
+  const honeypot = form.querySelector('input[name="company"]');
+  const btn = form.querySelector('button');
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  if (!SIGNUP_URL) {
+    form.hidden = true;
+    status.hidden = true;
+    document.querySelector('.cta__fine')?.setAttribute('hidden', '');
+    fallback.hidden = false;
+    return;
+  }
+
+  const setStatus = (msg, isError) => {
+    status.textContent = msg;
+    status.classList.toggle('cta__status--error', !!isError);
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = input.value.trim();
+    if (!EMAIL_RE.test(email)) {
+      setStatus('Please enter a valid email address.', true);
+      input.focus();
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    setStatus('');
+
+    try {
+      // text/plain + no-cors avoids a CORS preflight, which Apps Script can't answer.
+      // The response is opaque, so a completed request counts as saved.
+      await fetch(SIGNUP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          email,
+          company: honeypot?.value || '',
+          source: 'website-early-access',
+          page: location.pathname
+        })
+      });
+      btn.textContent = 'You\'re on the list ✓';
+      btn.classList.add('btn--done');
+      input.value = '';
+      input.placeholder = 'Talk soon.';
+      input.disabled = true;
+      setStatus('Thanks! We\'ll email you when Elevated launches.');
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Get Early Access';
+      setStatus('Something went wrong. Please check your connection and try again.', true);
+    }
+  });
+})();

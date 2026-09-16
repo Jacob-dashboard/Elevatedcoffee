@@ -1397,3 +1397,41 @@ body {
   .nutrition-modal,
   .nutrition-modal__body { transition: none; }
 }
+
+/* ─── EARLY ACCESS SIGNUP ─── */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+.cta__hp {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px; height: 1px;
+  opacity: 0;
+}
+.cta__form { position: relative; }
+.cta__form[hidden] { display: none; }
+.cta__form .btn:disabled { cursor: default; }
+.cta__form .btn--done { background: var(--brown); color: var(--cream); }
+.cta__status {
+  min-height: 1.4em;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: rgba(247,240,237,0.8);
+}
+.cta__status--error { color: #F2B8A8; }
+.cta__fallback {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(247,240,237,0.75);
+  margin-bottom: 20px;
+}
+.cta__fallback a {
+  color: var(--cream);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cta__fallback a:hover { color: #fff; }
