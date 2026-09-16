@@ -1129,3 +1129,218 @@ body {
 .product-card--caramel .product-card__can-img {
   filter: none;
 }
+
+/* ─── NUTRITION FACTS (hover / tap overlay on each can) ─── */
+.product-card { position: relative; }
+
+.product-card__can-wrap {
+  flex-direction: column;
+  gap: 18px;
+  cursor: pointer;
+  outline: none;
+}
+.product-card__can-wrap:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(247,240,237,0.6);
+}
+.product-card--blue .product-card__can-wrap:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(35,15,7,0.5);
+}
+
+.product-card__can-img {
+  transition: transform 0.4s var(--ease), opacity 0.35s var(--ease), filter 0.35s var(--ease);
+}
+
+.nutrition-hint {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(247,240,237,0.1);
+  color: rgba(247,240,237,0.6);
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+.product-card--blue .nutrition-hint {
+  background: rgba(35,15,7,0.08);
+  color: rgba(35,15,7,0.55);
+}
+.nutrition-hint__tap { display: none; }
+
+/* Overlay is positioned against the whole card so the label has room to breathe;
+   pointer-events stay off on the overlay itself so buttons beneath remain clickable. */
+.nutrition {
+  position: absolute;
+  inset: 14px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0s linear 0.35s;
+}
+
+.nutrition__label {
+  position: relative;
+  width: 100%;
+  max-width: 270px;
+  max-height: 100%;
+  overflow-y: auto;
+  pointer-events: auto;
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  padding: 8px 9px 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10.5px;
+  line-height: 1.3;
+  text-align: left;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  scrollbar-width: thin;
+}
+.nutrition__label strong { font-weight: 700; }
+.nutrition__label em { font-style: italic; }
+/* Beat the card's generic paragraph styling */
+.product-card .nutrition__label p {
+  color: #000;
+  line-height: 1.3;
+  margin-bottom: 0;
+  font-size: 10.5px;
+}
+.product-card .nutrition__label p.nutrition__foot        { font-size: 8px; }
+.product-card .nutrition__label p.nutrition__ingredients { font-size: 9px; line-height: 1.4; }
+
+.nutrition__title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+  color: #000;
+}
+.nutrition__serving {
+  margin: 0 0 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #000;
+  color: #000;
+  line-height: 1.35;
+}
+.nutrition__bar { background: #000; margin: 3px 0; }
+.nutrition__bar--thick { height: 7px; }
+.nutrition__bar--med   { height: 4px; }
+
+.nutrition__cal {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+.nutrition__cal-label { font-size: 9px; }
+.nutrition__cal-label strong { font-size: 16px; }
+.nutrition__cal-num { font-size: 24px; font-weight: 900; line-height: 1; }
+
+.nutrition__dv {
+  text-align: right;
+  font-weight: 700;
+  font-size: 9px;
+  padding: 2px 0;
+  border-bottom: 1px solid #000;
+}
+.nutrition__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 0;
+  border-bottom: 1px solid #000;
+}
+.nutrition__row--sub  { padding-left: 10px; }
+.nutrition__row--sub2 { padding-left: 20px; }
+.nutrition__row--micro { border-bottom-width: 1px; }
+.nutrition__row--micro:last-of-type { border-bottom: none; }
+.nutrition__row span:last-child,
+.nutrition__row strong:last-child { flex-shrink: 0; }
+
+.nutrition__foot {
+  margin: 4px 0 0;
+  font-size: 8px;
+  line-height: 1.3;
+  color: #000;
+}
+.nutrition__ingredients {
+  margin: 8px 0 0;
+  padding-top: 6px;
+  border-top: 1px solid #000;
+  font-size: 9px;
+  line-height: 1.4;
+  color: #000;
+}
+
+.nutrition__close {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Reveal on hover, keyboard focus, or tap-toggle */
+.product-card__can-wrap:hover .nutrition,
+.product-card__can-wrap:focus-visible .nutrition,
+.product-card__can-wrap.is-open .nutrition {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+.product-card__can-wrap:hover .product-card__can-img,
+.product-card__can-wrap:focus-visible .product-card__can-img,
+.product-card__can-wrap.is-open .product-card__can-img {
+  opacity: 0.18;
+  filter: blur(3px);
+  transform: scale(0.96);
+}
+.product-card__can-wrap:hover .nutrition-hint,
+.product-card__can-wrap:focus-visible .nutrition-hint,
+.product-card__can-wrap.is-open .nutrition-hint {
+  opacity: 0;
+}
+
+/* Touch devices: tap to toggle, label takes the can's place in the flow */
+@media (hover: none) {
+  .nutrition-hint__hover { display: none; }
+  .nutrition-hint__tap   { display: inline; }
+  .product-card__can-wrap:hover .nutrition { opacity: 0; visibility: hidden; }
+  .product-card__can-wrap:hover .product-card__can-img { opacity: 1; filter: none; transform: none; }
+  .product-card__can-wrap:hover .nutrition-hint { opacity: 1; }
+
+  .product-card__can-wrap.is-open .product-card__can-img,
+  .product-card__can-wrap.is-open .nutrition-hint { display: none; }
+  .product-card__can-wrap.is-open .nutrition {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    width: 100%;
+  }
+  .product-card__can-wrap.is-open .nutrition__label {
+    max-height: none;
+    overflow: visible;
+    max-width: 300px;
+  }
+  .nutrition__close { display: block; }
+}

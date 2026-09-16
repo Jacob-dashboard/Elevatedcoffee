@@ -128,6 +128,38 @@ renderCart();
 
 
 
+// ─── Nutrition facts toggle (tap on touch devices, Enter/Space on keyboard)
+const canWraps = document.querySelectorAll('.product-card__can-wrap');
+
+function closeAllNutrition(except) {
+  canWraps.forEach(w => { if (w !== except) w.classList.remove('is-open'); });
+}
+
+canWraps.forEach(wrap => {
+  wrap.addEventListener('click', (e) => {
+    if (e.target.closest('.nutrition__close')) {
+      wrap.classList.remove('is-open');
+      return;
+    }
+    if (e.target.closest('.nutrition')) return; // clicks inside the label (scrolling) shouldn't toggle
+    const willOpen = !wrap.classList.contains('is-open');
+    closeAllNutrition(wrap);
+    wrap.classList.toggle('is-open', willOpen);
+  });
+  wrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      wrap.classList.toggle('is-open');
+    } else if (e.key === 'Escape') {
+      wrap.classList.remove('is-open');
+    }
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.product-card__can-wrap')) closeAllNutrition();
+});
+
 // ─── Scroll animations
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
