@@ -128,36 +128,58 @@ renderCart();
 
 
 
-// ─── Nutrition facts toggle (tap on touch devices, Enter/Space on keyboard)
-const canWraps = document.querySelectorAll('.product-card__can-wrap');
+// ─── Nutrition facts popup (click or tap a can; Enter/Space on keyboard)
+const nutritionModal = document.createElement('div');
+nutritionModal.className = 'nutrition-modal';
+nutritionModal.setAttribute('role', 'dialog');
+nutritionModal.setAttribute('aria-modal', 'true');
+nutritionModal.setAttribute('aria-label', 'Nutrition facts');
+document.body.appendChild(nutritionModal);
 
-function closeAllNutrition(except) {
-  canWraps.forEach(w => { if (w !== except) w.classList.remove('is-open'); });
+let nutritionReturnFocus = null;
+
+function openNutrition(wrap) {
+  const source = wrap.querySelector('.nutrition__label');
+  if (!source) return;
+  const label = source.cloneNode(true);
+  const flavor = wrap.closest('.product-card')?.querySelector('h3')?.textContent;
+  if (flavor) {
+    const tag = document.createElement('p');
+    tag.className = 'nutrition__flavor';
+    tag.textContent = flavor;
+    label.insertBefore(tag, label.querySelector('.nutrition__title'));
+  }
+  nutritionModal.replaceChildren(label);
+  label.scrollTop = 0;
+  nutritionReturnFocus = wrap;
+  nutritionModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  label.querySelector('.nutrition__close')?.focus({ preventScroll: true });
 }
 
-canWraps.forEach(wrap => {
-  wrap.addEventListener('click', (e) => {
-    if (e.target.closest('.nutrition__close')) {
-      wrap.classList.remove('is-open');
-      return;
-    }
-    if (e.target.closest('.nutrition')) return; // clicks inside the label (scrolling) shouldn't toggle
-    const willOpen = !wrap.classList.contains('is-open');
-    closeAllNutrition(wrap);
-    wrap.classList.toggle('is-open', willOpen);
-  });
+function closeNutrition() {
+  if (!nutritionModal.classList.contains('open')) return;
+  nutritionModal.classList.remove('open');
+  document.body.style.overflow = '';
+  nutritionReturnFocus?.focus({ preventScroll: true });
+}
+
+document.querySelectorAll('.product-card__can-wrap').forEach(wrap => {
+  wrap.addEventListener('click', () => openNutrition(wrap));
   wrap.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      wrap.classList.toggle('is-open');
-    } else if (e.key === 'Escape') {
-      wrap.classList.remove('is-open');
+      openNutrition(wrap);
     }
   });
 });
 
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.product-card__can-wrap')) closeAllNutrition();
+// Close on the X, or a click on the dark backdrop outside the label
+nutritionModal.addEventListener('click', (e) => {
+  if (e.target.closest('.nutrition__close') || e.target === nutritionModal) closeNutrition();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNutrition();
 });
 
 // ─── Scroll animations
