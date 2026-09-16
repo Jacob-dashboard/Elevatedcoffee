@@ -142,6 +142,7 @@ function openNutrition(wrap) {
   const source = wrap.querySelector('.nutrition__label');
   if (!source) return;
   const label = source.cloneNode(true);
+  label.querySelector('.nutrition__close')?.remove(); // popup has its own close button
   const flavor = wrap.closest('.product-card')?.querySelector('h3')?.textContent;
   if (flavor) {
     const tag = document.createElement('p');
@@ -149,12 +150,31 @@ function openNutrition(wrap) {
     tag.textContent = flavor;
     label.insertBefore(tag, label.querySelector('.nutrition__title'));
   }
-  nutritionModal.replaceChildren(label);
-  label.scrollTop = 0;
+
+  const body = document.createElement('div');
+  body.className = 'nutrition-modal__body';
+  const cardImg = wrap.querySelector('.product-card__can-img');
+  if (cardImg) {
+    const can = document.createElement('img');
+    can.className = 'nutrition-modal__can';
+    can.src = cardImg.getAttribute('src');
+    can.alt = cardImg.alt;
+    body.appendChild(can);
+  }
+  body.appendChild(label);
+
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'nutrition-modal__close';
+  close.setAttribute('aria-label', 'Close nutrition facts');
+  close.innerHTML = '&times;';
+
+  nutritionModal.replaceChildren(close, body);
+  nutritionModal.scrollTop = 0;
   nutritionReturnFocus = wrap;
   nutritionModal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  label.querySelector('.nutrition__close')?.focus({ preventScroll: true });
+  close.focus({ preventScroll: true });
 }
 
 function closeNutrition() {
@@ -176,7 +196,7 @@ document.querySelectorAll('.product-card__can-wrap').forEach(wrap => {
 
 // Close on the X, or a click on the dark backdrop outside the label
 nutritionModal.addEventListener('click', (e) => {
-  if (e.target.closest('.nutrition__close') || e.target === nutritionModal) closeNutrition();
+  if (e.target.closest('.nutrition-modal__close') || e.target === nutritionModal) closeNutrition();
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeNutrition();
